@@ -11,19 +11,27 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Cinzel', 'Georgia', serif;
+        }
+        
+        :root {
+            --primary-bg: linear-gradient(135deg, #0c0c1a 0%, #1a1a2e 100%);
+            --gold-color: #ffd700;
+            --bronze-color: #cd7f32;
+            --silver-color: #c0c0c0;
+            --health-color: #ff4444;
+            --range-color: #44ff44;
+            --speed-color: #4444ff;
+            --cost-color: #ffaa00;
+            --score-color: #aa44ff;
         }
         
         body {
             min-height: 100vh;
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(120, 60, 20, 0.25) 0%, transparent 40%),
-                radial-gradient(circle at 90% 30%, rgba(160, 40, 40, 0.25) 0%, transparent 40%),
-                radial-gradient(circle at 50% 80%, rgba(200, 150, 30, 0.25) 0%, transparent 40%),
-                linear-gradient(135deg, #0c0c1a 0%, #1a1a2e 100%);
+            background: var(--primary-bg);
             color: #f0e6d2;
             overflow-x: hidden;
             position: relative;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         /* Анимированный фон с частицами */
@@ -82,20 +90,21 @@
         }
         
         .game-title {
-            font-size: 3.5rem;
+            font-size: clamp(2rem, 5vw, 3.5rem);
             background: linear-gradient(to right, #f0e6d2, #ffd700, #daa520);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             text-shadow: 0 0 30px rgba(218, 165, 32, 0.5);
             margin-bottom: 10px;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             position: relative;
             z-index: 1;
+            font-weight: 900;
         }
         
         .game-subtitle {
-            font-size: 1.3rem;
+            font-size: clamp(1rem, 2vw, 1.3rem);
             color: #c9b37e;
             font-style: italic;
             position: relative;
@@ -137,7 +146,7 @@
         }
         
         .panel-title {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             color: #ffd700;
             margin-bottom: 25px;
             padding-bottom: 12px;
@@ -225,7 +234,6 @@
         .stat-value {
             font-size: 1.2rem;
             font-weight: bold;
-            color: #fff;
         }
         
         .stat-label {
@@ -250,6 +258,7 @@
             gap: 12px;
             position: relative;
             overflow: hidden;
+            user-select: none;
         }
         
         .game-button::after {
@@ -320,7 +329,6 @@
         /* Игровое поле */
         .game-field {
             background: 
-                url('https://png.pngtree.com/png-clipart/20240613/original/pngtree-lion-head-face-logo-silhouette-black-icon-tattoo-mascot-hand-drawn-png-image_15317165.png') center/contain no-repeat,
                 radial-gradient(circle at center, 
                     rgba(20, 25, 45, 0.95) 0%, 
                     rgba(10, 15, 30, 0.98) 100%);
@@ -351,6 +359,9 @@
                 inset 0 0 30px rgba(0, 0, 0, 0.6);
             border: 2px solid rgba(218, 165, 32, 0.6);
             background-color: rgba(15, 20, 35, 0.9);
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
         }
         
         /* Панель сообщений с анимацией */
@@ -497,6 +508,10 @@
             .game-title {
                 font-size: 2.5rem;
             }
+            
+            .panel-title {
+                font-size: 1.4rem;
+            }
         }
         
         @media (max-width: 768px) {
@@ -511,44 +526,63 @@
             .tower-stats {
                 grid-template-columns: 1fr;
             }
+            
+            .side-panel {
+                padding: 15px;
+            }
+            
+            .game-button {
+                padding: 12px;
+                font-size: 1rem;
+            }
         }
         
-        /* Эффект параллакса для глубины */
-        .parallax-layer {
+        /* Логотип */
+        .logo-container {
             position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            z-index: 10;
+        }
+        
+        .game-logo {
             width: 100%;
             height: 100%;
-            pointer-events: none;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
         }
         
-        .layer-1 { animation: parallax1 20s infinite linear; }
-        .layer-2 { animation: parallax2 15s infinite linear; }
-        .layer-3 { animation: parallax3 25s infinite linear; }
-        
-        @keyframes parallax1 {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-1000px); }
+        /* Улучшенные стили для статистики */
+        .stat-display {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
         
-        @keyframes parallax2 {
-            0% { transform: translateX(0px) translateY(0px); }
-            100% { transform: translateX(-500px) translateY(-500px); }
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
         }
         
-        @keyframes parallax3 {
-            0% { transform: translateY(0px) rotate(0deg); }
-            100% { transform: translateY(-800px) rotate(180deg); }
+        .stat-item:last-child {
+            border-bottom: none;
         }
     </style>
 </head>
 <body>
+    <!-- Логотип -->
+    <div class="logo-container">
+        <img src="https://w7.pngwing.com/pngs/132/506/png-transparent-toilet-bidet-seats-bathroom-newspaper-graphy-taekwondo-sticker-hand-bathroom-room.png" 
+             alt="Логотип" class="game-logo">
+    </div>
+    
     <!-- Анимированные частицы на фоне -->
     <div class="particles" id="particles"></div>
-    
-    <!-- Параллакс слои -->
-    <div class="parallax-layer layer-1"></div>
-    <div class="parallax-layer layer-2"></div>
-    <div class="parallax-layer layer-3"></div>
     
     <!-- Модальное окно помощи -->
     <div id="helpModal" class="modal">
@@ -563,6 +597,13 @@
                 <p><strong>❤️ Жизни:</strong> Теряются когда враги доходят до замка. Игра заканчивается при 0 жизнях.</p>
                 <p><strong>🌊 Волны:</strong> Каждая следующая волна сложнее предыдущей. Всего 15 волн.</p>
                 <p><strong>🏆 Победа:</strong> Пройдите все 15 волн чтобы победить!</p>
+                <div style="margin-top: 20px; padding: 15px; background: rgba(255,215,0,0.1); border-radius: 10px;">
+                    <strong>Горячие клавиши:</strong>
+                    <div>1-4 - Выбор башни</div>
+                    <div>Пробел - Пауза/Продолжить</div>
+                    <div>Enter - Начать волну</div>
+                    <div>Escape - Закрыть окна</div>
+                </div>
             </div>
         </div>
     </div>
@@ -601,19 +642,19 @@
                         </div>
                         <div class="tower-stats">
                             <div class="stat">
-                                <span class="stat-value" style="color: #ff4444;">15</span>
+                                <span class="stat-value" style="color: var(--health-color);">15</span>
                                 <span class="stat-label">Урон</span>
                             </div>
                             <div class="stat">
-                                <span class="stat-value" style="color: #44ff44;">140px</span>
+                                <span class="stat-value" style="color: var(--range-color);">140px</span>
                                 <span class="stat-label">Дальность</span>
                             </div>
                             <div class="stat">
-                                <span class="stat-value" style="color: #4444ff;">1.0s</span>
+                                <span class="stat-value" style="color: var(--speed-color);">1.0s</span>
                                 <span class="stat-label">Скорость</span>
                             </div>
                             <div class="stat">
-                                <span class="stat-value" style="color: #ffaa00;">60</span>
+                                <span class="stat-value" style="color: var(--cost-color);">60</span>
                                 <span class="stat-label">Стоимость</span>
                             </div>
                         </div>
@@ -625,19 +666,19 @@
                         </div>
                         <div class="tower-stats">
                             <div class="stat">
-                                <span class="stat-value" style="color: #ff4444;">35</span>
+                                <span class="stat-value" style="color: var(--health-color);">35</span>
                                 <span class="stat-label">Урон</span>
                             </div>
                             <div class="stat">
-                                <span class="stat-value" style="color: #44ff44;">220px</span>
+                                <span class="stat-value" style="color: var(--range-color);">220px</span>
                                 <span class="stat-label">Дальность</span>
                             </div>
                             <div class="stat">
-                                <span class="stat-value" style="color: #4444ff;">2.0s</span>
+                                <span class="stat-value" style="color: var(--speed-color);">2.0s</span>
                                 <span class="stat-label">Скорость</span>
                             </div>
                             <div class="stat">
-                                <span class="stat-value" style="color: #ffaa00;">140</span>
+                                <span class="stat-value" style="color: var(--cost-color);">140</span>
                                 <span class="stat-label">Стоимость</span>
                             </div>
                         </div>
@@ -649,19 +690,19 @@
                         </div>
                         <div class="tower-stats">
                             <div class="stat">
-                                <span class="stat-value" style="color: #ff4444;">50</span>
+                                <span class="stat-value" style="color: var(--health-color);">50</span>
                                 <span class="stat-label">Урон</span>
                             </div>
                             <div class="stat">
-                                <span class="stat-value" style="color: #44ff44;">110px</span>
+                                <span class="stat-value" style="color: var(--range-color);">110px</span>
                                 <span class="stat-label">Дальность</span>
                             </div>
                             <div class="stat">
-                                <span class="stat-value" style="color: #4444ff;">2.5s</span>
+                                <span class="stat-value" style="color: var(--speed-color);">2.5s</span>
                                 <span class="stat-label">Скорость</span>
                             </div>
                             <div class="stat">
-                                <span class="stat-value" style="color: #ffaa00;">220</span>
+                                <span class="stat-value" style="color: var(--cost-color);">220</span>
                                 <span class="stat-label">Стоимость</span>
                             </div>
                         </div>
@@ -673,19 +714,19 @@
                         </div>
                         <div class="tower-stats">
                             <div class="stat">
-                                <span class="stat-value" style="color: #ff4444;">20</span>
+                                <span class="stat-value" style="color: var(--health-color);">20</span>
                                 <span class="stat-label">Урон</span>
                             </div>
                             <div class="stat">
-                                <span class="stat-value" style="color: #44ff44;">160px</span>
+                                <span class="stat-value" style="color: var(--range-color);">160px</span>
                                 <span class="stat-label">Дальность</span>
                             </div>
                             <div class="stat">
-                                <span class="stat-value" style="color: #4444ff;">0.5s</span>
+                                <span class="stat-value" style="color: var(--speed-color);">0.5s</span>
                                 <span class="stat-label">Скорость</span>
                             </div>
                             <div class="stat">
-                                <span class="stat-value" style="color: #ffaa00;">320</span>
+                                <span class="stat-value" style="color: var(--cost-color);">320</span>
                                 <span class="stat-label">Стоимость</span>
                             </div>
                         </div>
@@ -794,9 +835,95 @@
     </div>
 
     <script>
+        // ==================== ОПТИМИЗАЦИИ И ПРОИЗВОДИТЕЛЬНОСТЬ ====================
+        
+        // Оптимизированный игровой цикл
+        class GameLoop {
+            constructor() {
+                this.lastTime = 0;
+                this.accumulator = 0;
+                this.timestep = 1000 / 60; // 60 FPS
+                this.requestId = null;
+            }
+            
+            start(callback) {
+                const loop = (currentTime) => {
+                    if (!this.lastTime) this.lastTime = currentTime;
+                    const deltaTime = currentTime - this.lastTime;
+                    this.lastTime = currentTime;
+                    
+                    this.accumulator += deltaTime;
+                    
+                    while (this.accumulator >= this.timestep) {
+                        callback(this.timestep);
+                        this.accumulator -= this.timestep;
+                    }
+                    
+                    this.requestId = requestAnimationFrame(loop);
+                };
+                
+                this.requestId = requestAnimationFrame(loop);
+            }
+            
+            stop() {
+                if (this.requestId) {
+                    cancelAnimationFrame(this.requestId);
+                    this.requestId = null;
+                }
+            }
+        }
+        
+        // Оптимизированный пул объектов
+        class ObjectPool {
+            constructor(createFn, resetFn, initialSize = 10) {
+                this.createFn = createFn;
+                this.resetFn = resetFn;
+                this.pool = [];
+                this.active = new Set();
+                
+                for (let i = 0; i < initialSize; i++) {
+                    this.pool.push(createFn());
+                }
+            }
+            
+            get() {
+                let obj;
+                if (this.pool.length > 0) {
+                    obj = this.pool.pop();
+                } else {
+                    obj = this.createFn();
+                }
+                
+                this.active.add(obj);
+                return obj;
+            }
+            
+            release(obj) {
+                if (this.resetFn) {
+                    this.resetFn(obj);
+                }
+                
+                this.active.delete(obj);
+                this.pool.push(obj);
+            }
+            
+            clear() {
+                this.active.clear();
+                this.pool.length = 0;
+            }
+        }
+        
         // ==================== ИНИЦИАЛИЗАЦИЯ ИГРЫ ====================
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+        
+        // Оптимизация рендеринга
+        canvas.style.imageRendering = 'optimizeSpeed';
+        canvas.style.imageRendering = '-moz-crisp-edges';
+        canvas.style.imageRendering = '-webkit-optimize-contrast';
+        canvas.style.imageRendering = 'optimize-contrast';
+        canvas.style.imageRendering = 'pixelated';
+        canvas.style.msInterpolationMode = 'nearest-neighbor';
         
         // Игровые переменные
         let gameState = {
@@ -816,7 +943,7 @@
             upgradeCost: 120,
             selectedTowerForUpgrade: null,
             waveStartTime: 0,
-            waveDuration: 60000 // 60 секунд на волну
+            waveDuration: 60000
         };
         
         // Игровые объекты
@@ -826,7 +953,7 @@
         const particles = [];
         const effects = [];
         
-        // Путь врагов с извилистой траекторией
+        // Путь врагов с извилистой траекторией (оптимизирован для вычислений)
         const enemyPath = [
             {x: -20, y: 150},
             {x: 120, y: 150},
@@ -842,7 +969,21 @@
             {x: 820, y: 150}
         ];
         
-        // ==================== СИСТЕМА ЧАСТИЦ ====================
+        // Кэшированные значения для оптимизации
+        const TOWER_DATA = {
+            basic: { damage: 15, range: 140, fireRate: 60, color: '#32CD32', projectileColor: '#00FF00', ability: 'Быстрая стрельба' },
+            sniper: { damage: 35, range: 220, fireRate: 120, color: '#1E90FF', projectileColor: '#4169E1', ability: 'Пробивание брони' },
+            cannon: { damage: 50, range: 110, fireRate: 150, color: '#FF4500', projectileColor: '#FF8C00', ability: 'Взрывная атака' },
+            magic: { damage: 20, range: 160, fireRate: 30, color: '#BA55D3', projectileColor: '#FF00FF', ability: 'Замедление врагов' }
+        };
+        
+        const ENEMY_DATA = {
+            basic: { speed: 1.2, health: 40, reward: 15, color: '#FF6347' },
+            fast: { speed: 2.0, health: 25, reward: 20, color: '#00CED1' },
+            tank: { speed: 0.8, health: 120, reward: 40, color: '#696969' }
+        };
+        
+        // ==================== ОПТИМИЗИРОВАННАЯ СИСТЕМА ЧАСТИЦ ====================
         class Particle {
             constructor(x, y, color, velocity, size = 2, life = 60) {
                 this.x = x;
@@ -876,22 +1017,25 @@
             }
         }
         
-        // Создание частиц для фона
+        // Оптимизированное создание фоновых частиц
         function createBackgroundParticles() {
             const particlesContainer = document.getElementById('particles');
+            const fragment = document.createDocumentFragment();
+            
             for (let i = 0; i < 50; i++) {
                 const particle = document.createElement('div');
-                particle.style.position = 'absolute';
-                particle.style.width = Math.random() * 3 + 1 + 'px';
-                particle.style.height = particle.style.width;
-                particle.style.backgroundColor = `rgba(${Math.random() * 55 + 200}, ${Math.random() * 55 + 165}, ${Math.random() * 55 + 32}, ${Math.random() * 0.3 + 0.1})`;
-                particle.style.borderRadius = '50%';
-                particle.style.left = Math.random() * 100 + 'vw';
-                particle.style.top = Math.random() * 100 + 'vh';
-                particle.style.boxShadow = '0 0 10px rgba(255, 215, 0, 0.5)';
-                particlesContainer.appendChild(particle);
+                particle.style.cssText = `
+                    position: absolute;
+                    width: ${Math.random() * 3 + 1}px;
+                    height: ${Math.random() * 3 + 1}px;
+                    background-color: rgba(${Math.random() * 55 + 200}, ${Math.random() * 55 + 165}, ${Math.random() * 55 + 32}, ${Math.random() * 0.3 + 0.1});
+                    border-radius: 50%;
+                    left: ${Math.random() * 100}vw;
+                    top: ${Math.random() * 100}vh;
+                    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+                    pointer-events: none;
+                `;
                 
-                // Анимация движения частиц
                 particle.animate([
                     { transform: 'translateY(0px)', opacity: 0 },
                     { transform: `translateY(${Math.random() * -100 - 50}px)`, opacity: 0.8 },
@@ -901,74 +1045,43 @@
                     delay: Math.random() * 2000,
                     iterations: Infinity
                 });
+                
+                fragment.appendChild(particle);
             }
+            
+            particlesContainer.appendChild(fragment);
         }
         
-        // ==================== КЛАССЫ ИГРОВЫХ ОБЪЕКТОВ ====================
+        // ==================== ОПТИМИЗИРОВАННЫЕ КЛАССЫ ИГРОВЫХ ОБЪЕКТОВ ====================
         
-        // Класс башни
+        // Класс башни с оптимизированными вычислениями
         class Tower {
             constructor(x, y, type) {
                 this.x = x;
                 this.y = y;
                 this.type = type;
                 this.level = 1;
+                this.data = TOWER_DATA[type];
                 this.range = this.getRange();
                 this.damage = this.getDamage();
                 this.fireRate = this.getFireRate();
                 this.cooldown = 0;
-                this.color = this.getColor();
                 this.upgradeCost = 120;
-                this.projectileColor = this.getProjectileColor();
-                this.specialAbility = this.getSpecialAbility();
                 this.target = null;
                 this.rotation = 0;
                 this.id = Math.random().toString(36).substr(2, 9);
             }
             
             getRange() {
-                const ranges = { basic: 140, sniper: 220, cannon: 110, magic: 160 };
-                return ranges[this.type] * (1 + (this.level - 1) * 0.2);
+                return this.data.range * (1 + (this.level - 1) * 0.2);
             }
             
             getDamage() {
-                const damages = { basic: 15, sniper: 35, cannon: 50, magic: 20 };
-                return damages[this.type] * (1 + (this.level - 1) * 0.5);
+                return this.data.damage * (1 + (this.level - 1) * 0.5);
             }
             
             getFireRate() {
-                const rates = { basic: 60, sniper: 120, cannon: 150, magic: 30 };
-                return Math.max(10, rates[this.type] * (1 - (this.level - 1) * 0.1));
-            }
-            
-            getColor() {
-                const colors = {
-                    basic: '#32CD32',
-                    sniper: '#1E90FF',
-                    cannon: '#FF4500',
-                    magic: '#BA55D3'
-                };
-                return colors[this.type];
-            }
-            
-            getProjectileColor() {
-                const colors = {
-                    basic: '#00FF00',
-                    sniper: '#4169E1',
-                    cannon: '#FF8C00',
-                    magic: '#FF00FF'
-                };
-                return colors[this.type];
-            }
-            
-            getSpecialAbility() {
-                const abilities = {
-                    basic: 'Быстрая стрельба',
-                    sniper: 'Пробивание брони',
-                    cannon: 'Взрывная атака',
-                    magic: 'Замедление врагов'
-                };
-                return abilities[this.type];
+                return Math.max(10, this.data.fireRate * (1 - (this.level - 1) * 0.1));
             }
             
             update() {
@@ -977,15 +1090,11 @@
                     return;
                 }
                 
-                // Поиск цели
                 this.findTarget();
                 
-                // Стрельба по цели
                 if (this.target && this.target.health > 0) {
                     this.shoot();
                     this.cooldown = this.fireRate;
-                    
-                    // Визуальный эффект выстрела
                     this.createMuzzleFlash();
                 }
             }
@@ -993,23 +1102,23 @@
             findTarget() {
                 let closestEnemy = null;
                 let minDistance = this.range;
+                const rangeSquared = this.range * this.range;
                 
                 for (const enemy of enemies) {
                     if (enemy.health <= 0) continue;
                     
                     const dx = enemy.x - this.x;
                     const dy = enemy.y - this.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const distanceSquared = dx * dx + dy * dy;
                     
-                    if (distance < minDistance) {
-                        minDistance = distance;
+                    if (distanceSquared < rangeSquared && distanceSquared < minDistance * minDistance) {
+                        minDistance = Math.sqrt(distanceSquared);
                         closestEnemy = enemy;
                     }
                 }
                 
                 this.target = closestEnemy;
                 
-                // Поворот башни к цели
                 if (this.target) {
                     const dx = this.target.x - this.x;
                     const dy = this.target.y - this.y;
@@ -1026,7 +1135,7 @@
                     this.target,
                     this.damage,
                     this.type,
-                    this.projectileColor,
+                    this.data.projectileColor,
                     this.level
                 );
                 
@@ -1037,7 +1146,7 @@
                     particles.push(new Particle(
                         this.x,
                         this.y,
-                        this.projectileColor,
+                        this.data.projectileColor,
                         {
                             x: (Math.random() - 0.5) * 4,
                             y: (Math.random() - 0.5) * 4
@@ -1060,13 +1169,12 @@
             }
             
             draw() {
-                // Основание башни
                 ctx.save();
                 ctx.translate(this.x, this.y);
                 ctx.rotate(this.rotation);
                 
                 // Корпус башни
-                ctx.fillStyle = this.color;
+                ctx.fillStyle = this.data.color;
                 ctx.beginPath();
                 ctx.arc(0, 0, 20, 0, Math.PI * 2);
                 ctx.fill();
@@ -1081,23 +1189,17 @@
                 ctx.fillStyle = '#444';
                 ctx.fillRect(15, -5, 25, 10);
                 
-                // Уровень башни
-                ctx.fillStyle = '#FFD700';
-                ctx.font = 'bold 14px Arial';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                
                 ctx.restore();
                 
-                // Отображение уровня
+                // Уровень башни
                 ctx.fillStyle = '#FFD700';
                 ctx.font = 'bold 14px Arial';
                 ctx.textAlign = 'center';
                 ctx.fillText(this.level.toString(), this.x, this.y + 30);
                 
-                // Отображение радиуса при наведении
+                // Радиус при выборе
                 if (gameState.selectedTowerForUpgrade === this) {
-                    ctx.strokeStyle = `${this.color}80`;
+                    ctx.strokeStyle = `${this.data.color}80`;
                     ctx.lineWidth = 2;
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.range, 0, Math.PI * 2);
@@ -1112,7 +1214,7 @@
                 this.fireRate = this.getFireRate();
                 this.upgradeCost = Math.floor(this.upgradeCost * 1.5);
                 
-                // Визуальный эффект улучшения
+                // Эффект улучшения
                 for (let i = 0; i < 20; i++) {
                     particles.push(new Particle(
                         this.x,
@@ -1132,7 +1234,7 @@
             }
         }
         
-        // Класс врага
+        // Класс врага с оптимизированными вычислениями
         class Enemy {
             constructor(type, wave) {
                 this.type = type;
@@ -1140,11 +1242,11 @@
                 this.pathIndex = 0;
                 this.x = enemyPath[0].x;
                 this.y = enemyPath[0].y;
+                this.data = ENEMY_DATA[type] || ENEMY_DATA.basic;
                 this.speed = this.getSpeed();
                 this.health = this.getHealth();
                 this.maxHealth = this.health;
                 this.reward = this.getReward();
-                this.color = this.getColor();
                 this.slowDuration = 0;
                 this.id = Math.random().toString(36).substr(2, 9);
                 this.isBoss = wave % 5 === 0;
@@ -1158,42 +1260,25 @@
             }
             
             getSpeed() {
-                const speeds = { basic: 1.2, fast: 2.0, tank: 0.8 };
-                const speed = speeds[this.type] || 1.0;
-                return speed * (1 + (this.wave - 1) * 0.05);
+                return this.data.speed * (1 + (this.wave - 1) * 0.05);
             }
             
             getHealth() {
-                const healths = { basic: 40, fast: 25, tank: 120 };
-                const health = healths[this.type] || 40;
-                return Math.floor(health * (1 + (this.wave - 1) * 0.2));
+                return Math.floor(this.data.health * (1 + (this.wave - 1) * 0.2));
             }
             
             getReward() {
-                const rewards = { basic: 15, fast: 20, tank: 40 };
-                return rewards[this.type] || 15;
-            }
-            
-            getColor() {
-                const colors = {
-                    basic: '#FF6347',
-                    fast: '#00CED1',
-                    tank: '#696969'
-                };
-                return colors[this.type] || '#FF6347';
+                return this.data.reward;
             }
             
             update() {
-                // Применение замедления
                 let effectiveSpeed = this.speed;
                 if (this.slowDuration > 0) {
                     effectiveSpeed *= 0.5;
                     this.slowDuration--;
                 }
                 
-                // Движение по пути
                 if (this.pathIndex >= enemyPath.length - 1) {
-                    // Враг достиг замка
                     gameState.lives--;
                     if (gameState.lives <= 0) {
                         gameOver();
@@ -1218,13 +1303,14 @@
             
             draw() {
                 // Тело врага
-                ctx.fillStyle = this.color;
+                ctx.fillStyle = this.data.color;
                 ctx.beginPath();
                 
+                const radius = this.isBoss ? 18 : 12;
+                ctx.arc(this.x, this.y, radius, 0, Math.PI * 2);
+                ctx.fill();
+                
                 if (this.isBoss) {
-                    // Босс больше обычных врагов
-                    ctx.arc(this.x, this.y, 18, 0, Math.PI * 2);
-                    
                     // Корона для босса
                     ctx.save();
                     ctx.fillStyle = '#FFD700';
@@ -1238,17 +1324,7 @@
                     ctx.lineTo(this.x - 15, this.y - 15);
                     ctx.fill();
                     ctx.restore();
-                } else {
-                    ctx.arc(this.x, this.y, 12, 0, Math.PI * 2);
                 }
-                
-                ctx.fill();
-                
-                // Детали врага
-                ctx.fillStyle = '#000';
-                ctx.beginPath();
-                ctx.arc(this.x - 4, this.y - 4, 3, 0, Math.PI * 2);
-                ctx.fill();
                 
                 // Полоска здоровья
                 const healthWidth = this.isBoss ? 40 : 30;
@@ -1260,7 +1336,7 @@
                 ctx.fillStyle = healthPercent > 0.5 ? '#00FF00' : '#FFA500';
                 ctx.fillRect(this.x - healthWidth/2, this.y - 25, healthWidth * healthPercent, 5);
                 
-                // Тип врага (иконка)
+                // Иконка типа
                 ctx.fillStyle = '#FFF';
                 ctx.font = 'bold 12px Arial';
                 ctx.textAlign = 'center';
@@ -1288,7 +1364,7 @@
                     particles.push(new Particle(
                         this.x,
                         this.y,
-                        this.color,
+                        this.data.color,
                         {
                             x: (Math.random() - 0.5) * 4,
                             y: (Math.random() - 0.5) * 4
@@ -1299,7 +1375,7 @@
                 }
                 
                 if (effect === 'slow') {
-                    this.slowDuration = 60; // 2 секунды при 60 FPS
+                    this.slowDuration = 60;
                 }
                 
                 if (this.health <= 0) {
@@ -1320,7 +1396,7 @@
                     particles.push(new Particle(
                         this.x,
                         this.y,
-                        this.color,
+                        this.data.color,
                         {
                             x: (Math.random() - 0.5) * 8,
                             y: (Math.random() - 0.5) * 8
@@ -1330,7 +1406,6 @@
                     ));
                 }
                 
-                // Особый эффект для босса
                 if (this.isBoss) {
                     showMessage(`БОСС УНИЧТОЖЕН! +${this.reward} золота`);
                     for (let i = 0; i < 30; i++) {
@@ -1371,7 +1446,7 @@
                     return false;
                 }
                 
-                // Сохранение позиции для следа
+                // След снаряда
                 this.trail.push({x: this.x, y: this.y});
                 if (this.trail.length > this.maxTrailLength) {
                     this.trail.shift();
@@ -1383,7 +1458,6 @@
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 
                 if (distance < this.speed) {
-                    // Попадание
                     this.onHit();
                     return false;
                 } else {
@@ -1396,7 +1470,6 @@
             onHit() {
                 let effect = null;
                 
-                // Особые эффекты в зависимости от типа снаряда
                 switch(this.type) {
                     case 'cannon':
                         // Взрывная атака
@@ -1415,14 +1488,10 @@
                     case 'magic':
                         effect = 'slow';
                         break;
-                        
-                    default:
-                        effect = 'normal';
                 }
                 
                 this.target.takeDamage(this.damage, effect);
                 
-                // Визуальный эффект попадания
                 if (effect === 'explosion') {
                     for (let i = 0; i < 20; i++) {
                         particles.push(new Particle(
@@ -1469,7 +1538,7 @@
             }
         }
         
-        // ==================== ИГРОВАЯ ЛОГИКА ====================
+        // ==================== ОПТИМИЗИРОВАННАЯ ИГРОВАЯ ЛОГИКА ====================
         
         // Обновление интерфейса
         function updateUI() {
@@ -1479,15 +1548,18 @@
             document.getElementById('enemiesKilled').textContent = gameState.enemiesKilled;
             document.getElementById('scoreValue').textContent = gameState.score;
             
-            document.getElementById('selectedTowerName').textContent = 
-                gameState.selectedTower === 'basic' ? 'Стрелковая' :
-                gameState.selectedTower === 'sniper' ? 'Снайперская' :
-                gameState.selectedTower === 'cannon' ? 'Пушка' : 'Магическая';
+            const towerNames = {
+                basic: 'Стрелковая',
+                sniper: 'Снайперская',
+                cannon: 'Пушка',
+                magic: 'Магическая'
+            };
             
+            document.getElementById('selectedTowerName').textContent = towerNames[gameState.selectedTower];
             document.getElementById('towerLevel').textContent = gameState.towerLevel;
             document.getElementById('upgradeCost').textContent = gameState.upgradeCost;
             
-            // Обновление прогресса волны
+            // Прогресс волны
             const progress = gameState.enemiesAlive / gameState.enemiesInWave;
             const progressPercent = Math.max(0, (1 - progress) * 100);
             document.getElementById('waveProgressBar').style.width = `${progressPercent}%`;
@@ -1500,16 +1572,19 @@
             const messageElement = document.getElementById('gameMessage');
             messageElement.textContent = text;
             
-            // Анимация сообщения
             messageElement.style.animation = 'none';
             setTimeout(() => {
                 messageElement.style.animation = 'pulse 2s infinite';
             }, 10);
         }
         
-        // Отрисовка игрового поля
+        // Отрисовка игрового поля (оптимизированная)
         function drawGameField() {
             // Фон
+            ctx.fillStyle = '#0a0a1a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Градиентный фон
             const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
             gradient.addColorStop(0, '#0a0a1a');
             gradient.addColorStop(1, '#1a1a2e');
@@ -1522,25 +1597,15 @@
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
             ctx.beginPath();
-            ctx.moveTo(enemyPath[0].x, enemyPath[0].y);
             
-            for (let i = 1; i < enemyPath.length; i++) {
-                ctx.lineTo(enemyPath[i].x, enemyPath[i].y);
+            for (let i = 0; i < enemyPath.length; i++) {
+                if (i === 0) {
+                    ctx.moveTo(enemyPath[i].x, enemyPath[i].y);
+                } else {
+                    ctx.lineTo(enemyPath[i].x, enemyPath[i].y);
+                }
             }
             ctx.stroke();
-            
-            // Окантовка пути
-            ctx.strokeStyle = '#DAA520';
-            ctx.lineWidth = 5;
-            ctx.setLineDash([10, 5]);
-            ctx.beginPath();
-            ctx.moveTo(enemyPath[0].x, enemyPath[0].y);
-            
-            for (let i = 1; i < enemyPath.length; i++) {
-                ctx.lineTo(enemyPath[i].x, enemyPath[i].y);
-            }
-            ctx.stroke();
-            ctx.setLineDash([]);
             
             // Точки пути
             ctx.fillStyle = '#FFD700';
@@ -1548,13 +1613,9 @@
                 ctx.beginPath();
                 ctx.arc(point.x, point.y, 8, 0, Math.PI * 2);
                 ctx.fill();
-                
-                ctx.strokeStyle = '#8B4513';
-                ctx.lineWidth = 2;
-                ctx.stroke();
             }
             
-            // Замок в конце пути
+            // Замок
             drawCastle();
         }
         
@@ -1581,25 +1642,9 @@
             ctx.closePath();
             ctx.fill();
             
-            ctx.beginPath();
-            ctx.moveTo(castleX + 45, castleY - 20);
-            ctx.lineTo(castleX + 65, castleY - 40);
-            ctx.lineTo(castleX + 85, castleY - 20);
-            ctx.closePath();
-            ctx.fill();
-            
             // Ворота
             ctx.fillStyle = '#8B4513';
             ctx.fillRect(castleX + 20, castleY + 20, 20, 40);
-            
-            // Флаг
-            ctx.fillStyle = '#FF0000';
-            ctx.beginPath();
-            ctx.moveTo(castleX + 30, castleY - 40);
-            ctx.lineTo(castleX + 30, castleY - 60);
-            ctx.lineTo(castleX + 40, castleY - 55);
-            ctx.closePath();
-            ctx.fill();
         }
         
         // Обновление и отрисовка эффектов
@@ -1607,19 +1652,17 @@
             for (let i = effects.length - 1; i >= 0; i--) {
                 const effect = effects[i];
                 
-                switch(effect.type) {
-                    case 'muzzleFlash':
-                        ctx.save();
-                        ctx.translate(effect.x, effect.y);
-                        ctx.rotate(effect.rotation);
-                        
-                        ctx.fillStyle = `rgba(255, 255, 200, ${effect.life / 10})`;
-                        ctx.beginPath();
-                        ctx.arc(0, 0, effect.size, 0, Math.PI * 2);
-                        ctx.fill();
-                        
-                        ctx.restore();
-                        break;
+                if (effect.type === 'muzzleFlash') {
+                    ctx.save();
+                    ctx.translate(effect.x, effect.y);
+                    ctx.rotate(effect.rotation);
+                    
+                    ctx.fillStyle = `rgba(255, 255, 200, ${effect.life / 10})`;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, effect.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    ctx.restore();
                 }
                 
                 effect.life--;
@@ -1629,8 +1672,10 @@
             }
         }
         
-        // Основной игровой цикл
-        function gameLoop() {
+        // Оптимизированный игровой цикл
+        const gameLoopManager = new GameLoop();
+        
+        function gameLoop(deltaTime) {
             if (gameState.gamePaused || !gameState.gameRunning) return;
             
             // Очистка холста
@@ -1696,27 +1741,23 @@
             gameState.gameRunning = true;
             gameState.enemiesAlive = gameState.enemiesInWave;
             
-            // Создание врагов для волны
             const enemyTypes = ['basic', 'fast', 'tank'];
             
             for (let i = 0; i < gameState.enemiesInWave; i++) {
-                // Выбор типа врага в зависимости от волны
                 let typeIndex = 0;
                 if (gameState.wave > 3) typeIndex = Math.floor(Math.random() * 2);
                 if (gameState.wave > 6) typeIndex = Math.floor(Math.random() * 3);
                 
                 setTimeout(() => {
                     enemies.push(new Enemy(enemyTypes[typeIndex], gameState.wave));
-                }, i * 1000);
+                }, i * 800); // Уменьшенная задержка для оптимизации
             }
             
             showMessage(`Волна ${gameState.wave} началась! Уничтожьте ${gameState.enemiesInWave} врагов!`);
             
-            // Увеличение сложности для следующей волны
             gameState.wave++;
             gameState.enemiesInWave = Math.floor(6 + (gameState.wave - 1) * 1.2);
             
-            // Обновление кнопки
             document.getElementById('startWaveBtn').innerHTML = '<i class="fas fa-sync-alt"></i> ВОЛНА ИДЁТ...';
         }
         
@@ -1725,11 +1766,12 @@
             gameState.gameRunning = false;
             showMessage(`Игра окончена! Вы дошли до волны ${gameState.wave - 1}. Счёт: ${gameState.score}`);
             
-            // Сохранение результата
             saveScore(gameState.score, gameState.wave - 1);
             
-            alert(`Игра окончена! Вы дошли до волны ${gameState.wave - 1}. Ваш счёт: ${gameState.score}`);
-            resetGame();
+            setTimeout(() => {
+                alert(`Игра окончена! Вы дошли до волны ${gameState.wave - 1}. Ваш счёт: ${gameState.score}`);
+                resetGame();
+            }, 100);
         }
         
         // Победа
@@ -1737,11 +1779,12 @@
             gameState.gameRunning = false;
             showMessage(`ПОБЕДА! Вы защитили королевство! Финальный счёт: ${gameState.score}`);
             
-            // Сохранение результата
             saveScore(gameState.score, gameState.wave - 1);
             
-            alert(`ПОБЕДА! Вы защитили королевство! Финальный счёт: ${gameState.score}`);
-            resetGame();
+            setTimeout(() => {
+                alert(`ПОБЕДА! Вы защитили королевство! Финальный счёт: ${gameState.score}`);
+                resetGame();
+            }, 100);
         }
         
         // Сброс игры
@@ -1793,9 +1836,9 @@
             for (const tower of towers) {
                 const dx = tower.x - x;
                 const dy = tower.y - y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
+                const distance = dx * dx + dy * dy;
                 
-                if (distance < 25) {
+                if (distance < 625) { // 25²
                     gameState.selectedTowerForUpgrade = tower;
                     gameState.upgradeCost = tower.upgradeCost;
                     showMessage(`Выбрана башня уровня ${tower.level}. Улучшение: ${tower.upgradeCost} золота`);
@@ -1804,22 +1847,18 @@
                 }
             }
             
-            // Сброс выбора башни
             gameState.selectedTowerForUpgrade = null;
             
-            // Проверка достаточности золота
             if (gameState.gold < gameState.selectedTowerCost) {
                 showMessage(`Недостаточно золота! Нужно ${gameState.selectedTowerCost}, у вас ${gameState.gold}`);
                 return;
             }
             
-            // Проверка размещения на пути
             if (isPointOnPath(x, y, 40)) {
                 showMessage("Нельзя ставить башни на пути врагов!");
                 return;
             }
             
-            // Проверка расстояния до других башен
             for (const tower of towers) {
                 const dx = tower.x - x;
                 const dy = tower.y - y;
@@ -1831,12 +1870,11 @@
                 }
             }
             
-            // Создание башни
             towers.push(new Tower(x, y, gameState.selectedTower));
             gameState.gold -= gameState.selectedTowerCost;
             showMessage(`Башня построена! Осталось золота: ${gameState.gold}`);
             
-            // Визуальный эффект постройки
+            // Эффект постройки
             for (let i = 0; i < 15; i++) {
                 particles.push(new Particle(
                     x, y,
@@ -1853,22 +1891,24 @@
             updateUI();
         });
         
-        // Проверка точки на пути
+        // Проверка точки на пути (оптимизированная)
         function isPointOnPath(px, py, threshold) {
+            const thresholdSquared = threshold * threshold;
+            
             for (let i = 0; i < enemyPath.length - 1; i++) {
                 const A = enemyPath[i];
                 const B = enemyPath[i + 1];
                 
-                const distance = pointToLineDistance(px, py, A.x, A.y, B.x, B.y);
-                if (distance < threshold) {
+                const distanceSquared = pointToLineDistanceSquared(px, py, A.x, A.y, B.x, B.y);
+                if (distanceSquared < thresholdSquared) {
                     return true;
                 }
             }
             return false;
         }
         
-        // Расстояние от точки до отрезка
-        function pointToLineDistance(px, py, x1, y1, x2, y2) {
+        // Квадрат расстояния от точки до отрезка (оптимизировано)
+        function pointToLineDistanceSquared(px, py, x1, y1, x2, y2) {
             const A = px - x1;
             const B = py - y1;
             const C = x2 - x1;
@@ -1896,7 +1936,7 @@
             const dx = px - xx;
             const dy = py - yy;
             
-            return Math.sqrt(dx * dx + dy * dy);
+            return dx * dx + dy * dy;
         }
         
         // Наведение на башню
@@ -1905,24 +1945,20 @@
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
             
-            // Сброс подсветки если не наведено на башню
             let hovered = false;
             
             for (const tower of towers) {
                 const dx = tower.x - x;
                 const dy = tower.y - y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
+                const distance = dx * dx + dy * dy;
                 
-                if (distance < 25) {
+                if (distance < 625) { // 25²
                     hovered = true;
-                    canvas.style.cursor = 'pointer';
                     break;
                 }
             }
             
-            if (!hovered) {
-                canvas.style.cursor = 'default';
-            }
+            canvas.style.cursor = hovered ? 'pointer' : 'default';
         });
         
         // Обработчики кнопок
@@ -1996,60 +2032,68 @@
         
         // Сохранение результатов
         function saveScore(score, wave) {
-            const records = JSON.parse(localStorage.getItem('tdRecords') || '[]');
-            const record = {
-                score: score,
-                wave: wave,
-                date: new Date().toLocaleDateString(),
-                time: new Date().toLocaleTimeString()
-            };
-            
-            records.push(record);
-            records.sort((a, b) => b.score - a.score);
-            
-            if (records.length > 10) records.length = 10;
-            
-            localStorage.setItem('tdRecords', JSON.stringify(records));
-            updateRecordsDisplay();
+            try {
+                const records = JSON.parse(localStorage.getItem('tdRecords') || '[]');
+                const record = {
+                    score: score,
+                    wave: wave,
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString()
+                };
+                
+                records.push(record);
+                records.sort((a, b) => b.score - a.score);
+                
+                if (records.length > 10) records.length = 10;
+                
+                localStorage.setItem('tdRecords', JSON.stringify(records));
+                updateRecordsDisplay();
+            } catch (e) {
+                console.error('Ошибка сохранения рекорда:', e);
+            }
         }
         
         // Обновление таблицы рекордов
         function updateRecordsDisplay() {
-            const records = JSON.parse(localStorage.getItem('tdRecords') || '[]');
-            const recordsList = document.getElementById('recordsList');
-            
-            if (records.length === 0) {
-                recordsList.innerHTML = '<p style="text-align: center; color: #aaa;">Рекордов пока нет</p>';
-                return;
+            try {
+                const records = JSON.parse(localStorage.getItem('tdRecords') || '[]');
+                const recordsList = document.getElementById('recordsList');
+                
+                if (records.length === 0) {
+                    recordsList.innerHTML = '<p style="text-align: center; color: #aaa;">Рекордов пока нет</p>';
+                    return;
+                }
+                
+                let html = '<div style="overflow-x: auto;">';
+                html += '<table style="width: 100%; border-collapse: collapse;">';
+                html += '<thead><tr style="background: rgba(255, 215, 0, 0.1);">';
+                html += '<th style="padding: 10px; text-align: left; color: #ffd700;">#</th>';
+                html += '<th style="padding: 10px; text-align: left; color: #ffd700;">Счёт</th>';
+                html += '<th style="padding: 10px; text-align: left; color: #ffd700;">Волна</th>';
+                html += '<th style="padding: 10px; text-align: left; color: #ffd700;">Дата</th>';
+                html += '</tr></thead><tbody>';
+                
+                records.forEach((record, index) => {
+                    const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅';
+                    html += `<tr style="border-bottom: 1px solid rgba(255, 215, 0, 0.2);">`;
+                    html += `<td style="padding: 10px;">${medal}</td>`;
+                    html += `<td style="padding: 10px; font-weight: bold; color: #fff;">${record.score}</td>`;
+                    html += `<td style="padding: 10px;">${record.wave}</td>`;
+                    html += `<td style="padding: 10px; color: #aaa;">${record.date} ${record.time}</td>`;
+                    html += `</tr>`;
+                });
+                
+                html += '</tbody></table></div>';
+                recordsList.innerHTML = html;
+            } catch (e) {
+                console.error('Ошибка загрузки рекордов:', e);
             }
-            
-            let html = '<div style="overflow-x: auto;">';
-            html += '<table style="width: 100%; border-collapse: collapse;">';
-            html += '<thead><tr style="background: rgba(255, 215, 0, 0.1);">';
-            html += '<th style="padding: 10px; text-align: left; color: #ffd700;">#</th>';
-            html += '<th style="padding: 10px; text-align: left; color: #ffd700;">Счёт</th>';
-            html += '<th style="padding: 10px; text-align: left; color: #ffd700;">Волна</th>';
-            html += '<th style="padding: 10px; text-align: left; color: #ffd700;">Дата</th>';
-            html += '</tr></thead><tbody>';
-            
-            records.forEach((record, index) => {
-                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅';
-                html += `<tr style="border-bottom: 1px solid rgba(255, 215, 0, 0.2);">`;
-                html += `<td style="padding: 10px;">${medal}</td>`;
-                html += `<td style="padding: 10px; font-weight: bold; color: #fff;">${record.score}</td>`;
-                html += `<td style="padding: 10px;">${record.wave}</td>`;
-                html += `<td style="padding: 10px; color: #aaa;">${record.date} ${record.time}</td>`;
-                html += `</tr>`;
-            });
-            
-            html += '</tbody></table></div>';
-            recordsList.innerHTML = html;
         }
         
         // ==================== ИНИЦИАЛИЗАЦИЯ ====================
         
-        // Запуск игрового цикла
-        const gameInterval = setInterval(gameLoop, 1000 / 60);
+        // Запуск оптимизированного игрового цикла
+        gameLoopManager.start(gameLoop);
         
         // Создание фоновых частиц
         createBackgroundParticles();
@@ -2061,7 +2105,7 @@
         updateUI();
         showMessage("Добро пожаловать в Tower Defense! Выберите башню и начните игру.");
         
-        // Закрытие модальных окон при клике вне их
+        // Закрытие модальных окон
         window.addEventListener('click', (e) => {
             if (e.target.classList.contains('modal')) {
                 e.target.style.display = 'none';
@@ -2093,6 +2137,17 @@
                     break;
             }
         });
+        
+        // Оптимизация для мобильных устройств
+        if ('ontouchstart' in window) {
+            canvas.style.touchAction = 'none';
+            
+            // Увеличение размера кнопок для мобильных
+            document.querySelectorAll('.game-button').forEach(button => {
+                button.style.padding = '20px';
+                button.style.fontSize = '1.3rem';
+            });
+        }
     </script>
 </body>
 </html>

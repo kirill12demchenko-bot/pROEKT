@@ -606,85 +606,6 @@
             filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
         }
         
-        /* Панель с башнями для перетаскивания */
-        .tower-drag-container {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 10px;
-            border: 2px solid rgba(255, 215, 0, 0.5);
-            backdrop-filter: blur(5px);
-        }
-        
-        .draggable-tower {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: grab;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            position: relative;
-            transition: transform 0.2s;
-            user-select: none;
-            border: 2px solid transparent;
-        }
-        
-        .draggable-tower:hover {
-            transform: scale(1.1);
-            border-color: #ffd700;
-        }
-        
-        .draggable-tower:active {
-            cursor: grabbing;
-            transform: scale(0.95);
-        }
-        
-        .draggable-tower[data-type="basic"] { background: #32CD32; }
-        .draggable-tower[data-type="sniper"] { background: #1E90FF; }
-        .draggable-tower[data-type="cannon"] { background: #FF4500; }
-        .draggable-tower[data-type="magic"] { background: #BA55D3; }
-        
-        .tower-cost {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ffd700;
-            color: #000;
-            font-size: 12px;
-            padding: 2px 5px;
-            border-radius: 10px;
-            font-weight: bold;
-            min-width: 20px;
-            text-align: center;
-        }
-        
-        /* Индикатор перетаскивания */
-        .drag-indicator {
-            position: fixed;
-            pointer-events: none;
-            z-index: 1000;
-            opacity: 0.8;
-        }
-        
-        /* Кнопка восстановления жизней */
-        .continue-btn {
-            background: linear-gradient(to bottom, #FF4444, #CC0000);
-            color: white;
-            margin-top: 10px;
-        }
-        
-        .continue-btn:hover {
-            background: linear-gradient(to bottom, #FF6666, #FF0000);
-            transform: translateY(-2px);
-        }
-        
         /* Адаптивность */
         @media (max-width: 1200px) {
             .game-interface {
@@ -707,17 +628,6 @@
             
             .tower-name {
                 font-size: 1.1rem;
-            }
-            
-            .tower-drag-container {
-                left: 10px;
-                bottom: 10px;
-            }
-            
-            .draggable-tower {
-                width: 45px;
-                height: 45px;
-                font-size: 20px;
             }
         }
         
@@ -754,11 +664,6 @@
                 margin-bottom: 0;
                 min-width: 200px;
             }
-            
-            .tower-drag-container {
-                flex-wrap: wrap;
-                max-width: 200px;
-            }
         }
         
         @media (max-width: 768px) {
@@ -791,19 +696,6 @@
                 width: 40px;
                 height: 40px;
             }
-            
-            .tower-drag-container {
-                bottom: 5px;
-                left: 5px;
-                padding: 8px;
-                gap: 8px;
-            }
-            
-            .draggable-tower {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-            }
         }
         
         @media (max-width: 480px) {
@@ -824,11 +716,6 @@
             .modal-content {
                 padding: 20px;
             }
-            
-            .tower-drag-container {
-                flex-direction: column;
-                max-width: 60px;
-            }
         }
     </style>
 </head>
@@ -837,26 +724,6 @@
     <div class="logo-container">
         <img src="https://w7.pngwing.com/pngs/132/506/png-transparent-toilet-bidet-seats-bathroom-newspaper-graphy-taekwondo-sticker-hand-bathroom-room.png" 
              alt="Логотип" class="game-logo">
-    </div>
-    
-    <!-- Панель с башнями для перетаскивания -->
-    <div class="tower-drag-container">
-        <div class="draggable-tower" data-type="basic" data-cost="60" draggable="true">
-            <span>🏹</span>
-            <div class="tower-cost">60</div>
-        </div>
-        <div class="draggable-tower" data-type="sniper" data-cost="140" draggable="true">
-            <span>🎯</span>
-            <div class="tower-cost">140</div>
-        </div>
-        <div class="draggable-tower" data-type="cannon" data-cost="220" draggable="true">
-            <span>💣</span>
-            <div class="tower-cost">220</div>
-        </div>
-        <div class="draggable-tower" data-type="magic" data-cost="320" draggable="true">
-            <span>🔮</span>
-            <div class="tower-cost">320</div>
-        </div>
     </div>
     
     <!-- Анимированные частицы на фоне -->
@@ -869,11 +736,11 @@
             <h2 style="color: #ffd700; margin-bottom: 20px; text-align: center;">Помощь по игре</h2>
             <div style="line-height: 1.8;">
                 <p><strong>🎯 Цель игры:</strong> Защитите замок от врагов, построив и улучшая башни.</p>
-                <p><strong>🏗️ Постройка башен:</strong> Перетащите башню снизу слева на игровое поле.</p>
+                <p><strong>🏗️ Постройка башен:</strong> Выберите башню слева и кликните на игровое поле.</p>
                 <p><strong>⚡ Улучшение башен:</strong> Кликните на существующую башню и нажмите кнопку улучшения.</p>
                 <p><strong>💰 Золото:</strong> Получайте за убийство врагов, тратьте на постройку и улучшения.</p>
-                <p><strong>❤️ Жизни:</strong> Теряются когда враги доходят до замка. Можно восстановить.</p>
-                <p><strong>🌊 Волны:</strong> Каждая следующая волна сложнее предыдущей. Прогресс сохраняется.</p>
+                <p><strong>❤️ Жизни:</strong> Теряются когда враги доходят до замка. Игра заканчивается при 0 жизнях.</p>
+                <p><strong>🌊 Волны:</strong> Каждая следующая волна сложнее предыдущей. Всего 15 волн.</p>
                 <p><strong>🏆 Победа:</strong> Пройдите все 15 волн чтобы победить!</p>
                 <div style="margin-top: 20px; padding: 15px; background: rgba(255,215,0,0.1); border-radius: 10px;">
                     <strong>Горячие клавиши:</strong>
@@ -881,7 +748,6 @@
                     <div>Пробел - Пауза/Продолжить</div>
                     <div>Enter - Начать волну</div>
                     <div>Escape - Закрыть окна</div>
-                    <div>R - Восстановить жизни (50 золота)</div>
                 </div>
             </div>
         </div>
@@ -1085,7 +951,7 @@
                     
                     <!-- Панель сообщений -->
                     <div class="message-panel">
-                        <div id="gameMessage">Перетащите башню на поле для защиты!</div>
+                        <div id="gameMessage">Выберите башню и начните игру!</div>
                     </div>
                 </div>
             </div>
@@ -1121,11 +987,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Кнопка восстановления жизней -->
-                    <button class="game-button continue-btn" id="restoreLivesBtn">
-                        <i class="fas fa-heartbeat"></i> ВОССТАНОВИТЬ ЖИЗНИ (50 золота)
-                    </button>
                 </div>
                 
                 <h2 class="panel-title">
@@ -1216,7 +1077,6 @@
         let gameState = {
             gold: 200,
             lives: 25,
-            maxLives: 25,
             score: 0,
             wave: 1,
             totalWaves: 15,
@@ -1231,16 +1091,8 @@
             upgradeCost: 120,
             selectedTowerForUpgrade: null,
             waveStartTime: 0,
-            waveDuration: 60000,
-            gameOver: false
+            waveDuration: 60000
         };
-        
-        // Переменные для перетаскивания башен
-        let draggingTower = null;
-        let dragStartX = 0;
-        let dragStartY = 0;
-        let dragOffsetX = 0;
-        let dragOffsetY = 0;
         
         // Игровые объекты
         const towers = [];
@@ -1307,7 +1159,7 @@
             const particlesContainer = document.getElementById('particles');
             const fragment = document.createDocumentFragment();
             
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 30; i++) { // Меньше частиц для производительности
                 const particle = document.createElement('div');
                 particle.style.cssText = `
                     position: absolute;
@@ -1427,7 +1279,7 @@
                 projectiles.push(projectile);
                 
                 // Создание эффекта выстрела
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 3; i++) { // Меньше частиц
                     particles.push(new Particle(
                         this.x,
                         this.y,
@@ -1454,7 +1306,7 @@
             }
             
             draw() {
-                const scale = canvas.width / 800;
+                const scale = canvas.width / 800; // Масштабирование для разных размеров
                 
                 ctx.save();
                 ctx.translate(this.x, this.y);
@@ -1511,7 +1363,7 @@
                 showUpgradeModal(this, oldLevel, oldDamage, oldRange, oldFireRate);
                 
                 // Эффект улучшения
-                for (let i = 0; i < 15; i++) {
+                for (let i = 0; i < 15; i++) { // Меньше частиц
                     particles.push(new Particle(
                         this.x,
                         this.y,
@@ -1577,9 +1429,9 @@
         };
         
         const ENEMY_DATA = {
-            basic: { speed: 1.2, health: 40, reward: 15, color: '#FF6347', icon: '👥' },
-            fast: { speed: 2.0, health: 25, reward: 20, color: '#00CED1', icon: '⚡' },
-            tank: { speed: 0.8, health: 120, reward: 40, color: '#696969', icon: '🛡️' }
+            basic: { speed: 1.2, health: 40, reward: 15, color: '#FF6347' },
+            fast: { speed: 2.0, health: 25, reward: 20, color: '#00CED1' },
+            tank: { speed: 0.8, health: 120, reward: 40, color: '#696969' }
         };
         
         // Класс врага
@@ -1628,13 +1480,8 @@
                 
                 if (this.pathIndex >= enemyPath.length - 1) {
                     gameState.lives--;
-                    if (gameState.lives <= 0 && !gameState.gameOver) {
-                        gameState.gameOver = true;
+                    if (gameState.lives <= 0) {
                         gameOver();
-                    } else if (gameState.lives <= 0) {
-                        return false;
-                    } else {
-                        showMessage(`Враг достиг замка! Осталось жизней: ${gameState.lives}`);
                     }
                     return false;
                 }
@@ -1691,13 +1538,13 @@
                 ctx.fillStyle = healthPercent > 0.5 ? '#00FF00' : '#FFA500';
                 ctx.fillRect(this.x - healthWidth/2, this.y - 25 * scale, healthWidth * healthPercent, 5 * scale);
                 
-                // Матовая иконка типа
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                // Иконка типа
+                ctx.fillStyle = '#FFF';
                 ctx.font = `bold ${12 * scale}px Arial`;
                 ctx.textAlign = 'center';
                 
-                // Используем матовые иконки
-                const icon = this.data.icon;
+                const icon = this.type === 'basic' ? '👤' : 
+                            this.type === 'fast' ? '⚡' : '🛡️';
                 
                 ctx.fillText(icon, this.x, this.y + 5 * scale);
                 
@@ -1715,7 +1562,7 @@
                 this.health -= damage;
                 
                 // Эффект попадания
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 3; i++) { // Меньше частиц
                     particles.push(new Particle(
                         this.x,
                         this.y,
@@ -1747,7 +1594,7 @@
                 gameState.enemiesAlive--;
                 
                 // Эффект смерти
-                for (let i = 0; i < 10; i++) {
+                for (let i = 0; i < 10; i++) { // Меньше частиц
                     particles.push(new Particle(
                         this.x,
                         this.y,
@@ -1763,7 +1610,7 @@
                 
                 if (this.isBoss) {
                     showMessage(`БОСС УНИЧТОЖЕН! +${this.reward} золота`);
-                    for (let i = 0; i < 20; i++) {
+                    for (let i = 0; i < 20; i++) { // Меньше частиц
                         particles.push(new Particle(
                             this.x,
                             this.y,
@@ -1848,7 +1695,7 @@
                 this.target.takeDamage(this.damage, effect);
                 
                 if (effect === 'explosion') {
-                    for (let i = 0; i < 10; i++) {
+                    for (let i = 0; i < 10; i++) { // Меньше частиц
                         particles.push(new Particle(
                             this.target.x,
                             this.target.y,
@@ -2034,7 +1881,7 @@
             const deltaTime = currentTime - lastTime;
             lastTime = currentTime;
             
-            if (gameState.gamePaused || !gameState.gameRunning || gameState.gameOver) {
+            if (gameState.gamePaused || !gameState.gameRunning) {
                 requestAnimationFrame(gameLoop);
                 return;
             }
@@ -2104,7 +1951,7 @@
         
         // Запуск новой волны
         function startWave() {
-            if (gameState.gameRunning || gameState.gameOver) return;
+            if (gameState.gameRunning) return;
             
             gameState.gameRunning = true;
             gameState.enemiesAlive = gameState.enemiesInWave;
@@ -2132,52 +1979,14 @@
         // Конец игры
         function gameOver() {
             gameState.gameRunning = false;
-            gameState.gameOver = true;
-            showMessage(`Поражение! Вы дошли до волны ${gameState.wave - 1}. Счёт: ${gameState.score}. Нажмите "ПРОДОЛЖИТЬ" чтобы вернуться в игру`);
+            showMessage(`Игра окончена! Вы дошли до волны ${gameState.wave - 1}. Счёт: ${gameState.score}`);
             
             saveScore(gameState.score, gameState.wave - 1);
             
-            document.getElementById('startWaveBtn').innerHTML = '<i class="fas fa-redo"></i> ПРОДОЛЖИТЬ';
-            document.getElementById('startWaveBtn').disabled = false;
-        }
-        
-        // Продолжить игру после поражения
-        function continueGame() {
-            if (gameState.gameOver) {
-                gameState.gameOver = false;
-                gameState.lives = Math.floor(gameState.maxLives / 2);
-                showMessage(`Игра продолжена! У вас ${gameState.lives} жизней. Волна ${gameState.wave - 1}`);
-                updateUI();
-            }
-        }
-        
-        // Восстановить жизни
-        function restoreLives() {
-            if (gameState.gold >= 50 && gameState.lives < gameState.maxLives) {
-                gameState.gold -= 50;
-                gameState.lives = Math.min(gameState.maxLives, gameState.lives + 10);
-                showMessage(`Жизни восстановлены! Теперь у вас ${gameState.lives} жизней`);
-                updateUI();
-                
-                // Эффект восстановления
-                for (let i = 0; i < 20; i++) {
-                    particles.push(new Particle(
-                        canvas.width / 2,
-                        canvas.height / 2,
-                        '#FF4444',
-                        {
-                            x: (Math.random() - 0.5) * 10,
-                            y: (Math.random() - 0.5) * 10
-                        },
-                        Math.random() * 3 + 2,
-                        60
-                    ));
-                }
-            } else if (gameState.gold < 50) {
-                showMessage(`Недостаточно золота! Нужно 50, у вас ${gameState.gold}`);
-            } else {
-                showMessage(`У вас уже максимальное количество жизней!`);
-            }
+            setTimeout(() => {
+                alert(`Игра окончена! Вы дошли до волны ${gameState.wave - 1}. Ваш счёт: ${gameState.score}`);
+                resetGame();
+            }, 100);
         }
         
         // Победа
@@ -2198,7 +2007,6 @@
             gameState = {
                 gold: 200,
                 lives: 25,
-                maxLives: 25,
                 score: 0,
                 wave: 1,
                 totalWaves: 15,
@@ -2213,8 +2021,7 @@
                 upgradeCost: 120,
                 selectedTowerForUpgrade: null,
                 waveStartTime: 0,
-                waveDuration: 60000,
-                gameOver: false
+                waveDuration: 60000
             };
             
             towers.length = 0;
@@ -2224,173 +2031,48 @@
             effects.length = 0;
             
             updateUI();
-            showMessage("Игра сброшена. Перетащите башню на поле для защиты!");
+            showMessage("Игра сброшена. Выберите башню и начните игру!");
         }
         
-        // ==================== СИСТЕМА ПЕРЕТАСКИВАНИЯ БАШЕН ====================
+        // ==================== ОБРАБОТЧИКИ СОБЫТИЙ ====================
         
-        // Начало перетаскивания
-        document.querySelectorAll('.draggable-tower').forEach(tower => {
-            tower.addEventListener('dragstart', (e) => {
-                if (!gameState.gameRunning) {
-                    showMessage("Сначала запустите волну!");
-                    e.preventDefault();
-                    return;
-                }
-                
-                if (gameState.gold < parseInt(tower.dataset.cost)) {
-                    showMessage(`Недостаточно золота! Нужно ${tower.dataset.cost}, у вас ${gameState.gold}`);
-                    e.preventDefault();
-                    return;
-                }
-                
-                draggingTower = {
-                    type: tower.dataset.type,
-                    cost: parseInt(tower.dataset.cost),
-                    icon: tower.querySelector('span').textContent
-                };
-                
-                dragStartX = e.clientX;
-                dragStartY = e.clientY;
-                
-                // Создаем прозрачное изображение для перетаскивания
-                const dragImage = document.createElement('div');
-                dragImage.textContent = tower.querySelector('span').textContent;
-                dragImage.style.cssText = `
-                    font-size: 24px;
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 50%;
-                    background: ${getTowerColor(tower.dataset.type)};
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    position: fixed;
-                    top: -100px;
-                    left: -100px;
-                    opacity: 0.8;
-                `;
-                document.body.appendChild(dragImage);
-                e.dataTransfer.setDragImage(dragImage, 25, 25);
-                
-                setTimeout(() => document.body.removeChild(dragImage), 0);
-            });
-            
-            tower.addEventListener('touchstart', (e) => {
-                if (!gameState.gameRunning) {
-                    showMessage("Сначала запустите волну!");
-                    return;
-                }
-                
-                if (gameState.gold < parseInt(tower.dataset.cost)) {
-                    showMessage(`Недостаточно золота! Нужно ${tower.dataset.cost}, у вас ${gameState.gold}`);
-                    return;
-                }
-                
-                draggingTower = {
-                    type: tower.dataset.type,
-                    cost: parseInt(tower.dataset.cost),
-                    icon: tower.querySelector('span').textContent
-                };
-                
-                const touch = e.touches[0];
-                dragStartX = touch.clientX;
-                dragStartY = touch.clientY;
-                
-                e.preventDefault();
-            });
-        });
-        
-        // Получить цвет башни
-        function getTowerColor(type) {
-            switch(type) {
-                case 'basic': return '#32CD32';
-                case 'sniper': return '#1E90FF';
-                case 'cannon': return '#FF4500';
-                case 'magic': return '#BA55D3';
-                default: return '#32CD32';
+        // Обработка кликов по холсту
+        canvas.addEventListener('click', (e) => {
+            if (!gameState.gameRunning) {
+                showMessage("Сначала запустите волну!");
+                return;
             }
-        }
-        
-        // Перетаскивание над холстом
-        canvas.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            canvas.style.borderColor = '#FFD700';
-            canvas.style.boxShadow = '0 0 30px rgba(255, 215, 0, 0.7)';
-        });
-        
-        canvas.addEventListener('dragleave', () => {
-            canvas.style.borderColor = 'rgba(218, 165, 32, 0.6)';
-            canvas.style.boxShadow = '0 0 20px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.6)';
-        });
-        
-        // Бросание башни на холст
-        canvas.addEventListener('drop', (e) => {
-            e.preventDefault();
-            
-            canvas.style.borderColor = 'rgba(218, 165, 32, 0.6)';
-            canvas.style.boxShadow = '0 0 20px rgba(255, 215, 0, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.6)';
-            
-            if (!draggingTower) return;
             
             const rect = canvas.getBoundingClientRect();
             const scale = canvas.width / rect.width;
             const x = (e.clientX - rect.left) * scale;
             const y = (e.clientY - rect.top) * scale;
             
-            placeTower(x, y, draggingTower.type, draggingTower.cost);
-            draggingTower = null;
-        });
-        
-        // Для мобильных устройств
-        canvas.addEventListener('touchmove', (e) => {
-            if (!draggingTower) return;
+            // Проверка клика по существующей башне
+            for (const tower of towers) {
+                const dx = tower.x - x;
+                const dy = tower.y - y;
+                const distance = dx * dx + dy * dy;
+                const radius = 25 * (canvas.width / 800);
+                
+                if (distance < radius * radius) {
+                    gameState.selectedTowerForUpgrade = tower;
+                    gameState.upgradeCost = tower.upgradeCost;
+                    showMessage(`Выбрана башня уровня ${tower.level}. Улучшение: ${tower.upgradeCost} золота`);
+                    updateUI();
+                    return;
+                }
+            }
             
-            const touch = e.touches[0];
-            const rect = canvas.getBoundingClientRect();
-            const scale = canvas.width / rect.width;
-            const x = (touch.clientX - rect.left) * scale;
-            const y = (touch.clientY - rect.top) * scale;
+            gameState.selectedTowerForUpgrade = null;
             
-            // Показываем предпросмотр
-            drawTowerPreview(x, y, draggingTower.type);
+            if (gameState.gold < gameState.selectedTowerCost) {
+                showMessage(`Недостаточно золота! Нужно ${gameState.selectedTowerCost}, у вас ${gameState.gold}`);
+                return;
+            }
             
-            e.preventDefault();
-        });
-        
-        canvas.addEventListener('touchend', (e) => {
-            if (!draggingTower) return;
-            
-            const touch = e.changedTouches[0];
-            const rect = canvas.getBoundingClientRect();
-            const scale = canvas.width / rect.width;
-            const x = (touch.clientX - rect.left) * scale;
-            const y = (touch.clientY - rect.top) * scale;
-            
-            placeTower(x, y, draggingTower.type, draggingTower.cost);
-            draggingTower = null;
-            
-            e.preventDefault();
-        });
-        
-        // Отрисовка предпросмотра башни
-        function drawTowerPreview(x, y, type) {
-            const scale = canvas.width / 800;
-            const color = getTowerColor(type);
-            
-            ctx.save();
-            ctx.globalAlpha = 0.5;
-            ctx.fillStyle = color;
-            ctx.beginPath();
-            ctx.arc(x, y, 20 * scale, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
-        }
-        
-        // Размещение башни
-        function placeTower(x, y, type, cost) {
             // Проверка размещения на пути
-            const threshold = 40 * (canvas.width / 800);
+            const threshold = 40 * scale;
             let onPath = false;
             
             for (let i = 0; i < enemyPath.length - 1; i++) {
@@ -2410,7 +2092,7 @@
             }
             
             // Проверка расстояния до других башен
-            const minDistance = 60 * (canvas.width / 800);
+            const minDistance = 60 * scale;
             for (const tower of towers) {
                 const dx = tower.x - x;
                 const dy = tower.y - y;
@@ -2422,22 +2104,16 @@
                 }
             }
             
-            // Проверка границ поля
-            if (x < 20 || x > canvas.width - 20 || y < 20 || y > canvas.height - 20) {
-                showMessage("Башня должна быть внутри игрового поля!");
-                return;
-            }
-            
             // Создание башни
-            towers.push(new Tower(x, y, type));
-            gameState.gold -= cost;
+            towers.push(new Tower(x, y, gameState.selectedTower));
+            gameState.gold -= gameState.selectedTowerCost;
             showMessage(`Башня построена! Осталось золота: ${gameState.gold}`);
             
             // Эффект постройки
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 10; i++) { // Меньше частиц
                 particles.push(new Particle(
                     x, y,
-                    getTowerColor(type),
+                    '#32CD32',
                     {
                         x: (Math.random() - 0.5) * 6,
                         y: (Math.random() - 0.5) * 6
@@ -2448,7 +2124,7 @@
             }
             
             updateUI();
-        }
+        });
         
         // Вспомогательная функция для расстояния до линии
         function pointToLineDistance(px, py, x1, y1, x2, y2) {
@@ -2482,39 +2158,6 @@
             return Math.sqrt(dx * dx + dy * dy);
         }
         
-        // ==================== ОБРАБОТЧИКИ СОБЫТИЙ ====================
-        
-        // Обработка кликов по холсту для выбора башни
-        canvas.addEventListener('click', (e) => {
-            if (!gameState.gameRunning) {
-                showMessage("Сначала запустите волну!");
-                return;
-            }
-            
-            const rect = canvas.getBoundingClientRect();
-            const scale = canvas.width / rect.width;
-            const x = (e.clientX - rect.left) * scale;
-            const y = (e.clientY - rect.top) * scale;
-            
-            // Проверка клика по существующей башне
-            for (const tower of towers) {
-                const dx = tower.x - x;
-                const dy = tower.y - y;
-                const distance = dx * dx + dy * dy;
-                const radius = 25 * (canvas.width / 800);
-                
-                if (distance < radius * radius) {
-                    gameState.selectedTowerForUpgrade = tower;
-                    gameState.upgradeCost = tower.upgradeCost;
-                    showMessage(`Выбрана башня уровня ${tower.level}. Улучшение: ${tower.upgradeCost} золота`);
-                    updateUI();
-                    return;
-                }
-            }
-            
-            gameState.selectedTowerForUpgrade = null;
-        });
-        
         // Наведение на башню
         canvas.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
@@ -2546,9 +2189,6 @@
                 showMessage("Игра продолжена!");
                 document.getElementById('startWaveBtn').innerHTML = '<i class="fas fa-play"></i> НАЧАТЬ ВОЛНУ';
                 document.getElementById('pauseGameBtn').innerHTML = '<i class="fas fa-pause"></i> ПАУЗА';
-            } else if (gameState.gameOver) {
-                continueGame();
-                document.getElementById('startWaveBtn').innerHTML = '<i class="fas fa-play"></i> НАЧАТЬ ВОЛНУ';
             } else if (!gameState.gameRunning) {
                 startWave();
             }
@@ -2585,9 +2225,6 @@
             gameState.towerLevel = gameState.selectedTowerForUpgrade.level;
             updateUI();
         });
-        
-        // Восстановление жизней
-        document.getElementById('restoreLivesBtn').addEventListener('click', restoreLives);
         
         // Выбор башен
         document.querySelectorAll('.tower-card').forEach(card => {
@@ -2695,7 +2332,7 @@
         
         // Инициализация UI
         updateUI();
-        showMessage("Добро пожаловать! Перетащите башню на поле для защиты.");
+        showMessage("Добро пожаловать в Tower Defense! Выберите башню и начните игру.");
         
         // Закрытие модальных окон
         window.addEventListener('click', (e) => {
@@ -2712,7 +2349,7 @@
                     document.getElementById('pauseGameBtn').click();
                     break;
                 case 'Enter':
-                    if (!gameState.gameRunning || gameState.gameOver) {
+                    if (!gameState.gameRunning) {
                         document.getElementById('startWaveBtn').click();
                     }
                     break;
@@ -2728,10 +2365,6 @@
                     closeModal('helpModal');
                     closeModal('recordsModal');
                     closeModal('upgradeModal');
-                    break;
-                case 'r':
-                case 'R':
-                    restoreLives();
                     break;
             }
         });

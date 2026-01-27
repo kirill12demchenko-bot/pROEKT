@@ -368,6 +368,18 @@
             transform: translateY(-2px);
         }
         
+        .btn-danger {
+            background: linear-gradient(to bottom, #FF4444, #CC0000);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 68, 68, 0.3);
+        }
+        
+        .btn-danger:hover {
+            background: linear-gradient(to bottom, #FF6666, #FF0000);
+            box-shadow: 0 8px 20px rgba(255, 68, 68, 0.5);
+            transform: translateY(-2px);
+        }
+        
         /* Игровое поле */
         .game-field {
             flex: 1;
@@ -606,6 +618,127 @@
             filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
         }
         
+        /* Всплывающее меню для башни */
+        .tower-context-menu {
+            display: none;
+            position: absolute;
+            background: linear-gradient(145deg, 
+                rgba(40, 40, 60, 0.95) 0%, 
+                rgba(60, 60, 80, 0.95) 100%);
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            min-width: 200px;
+            backdrop-filter: blur(10px);
+            animation: menuAppear 0.3s ease;
+        }
+        
+        @keyframes menuAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .tower-context-menu.active {
+            display: block;
+        }
+        
+        .tower-menu-header {
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .tower-menu-title {
+            color: #ffd700;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .tower-menu-level {
+            color: #c9b37e;
+            font-size: 0.9rem;
+        }
+        
+        .tower-menu-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .tower-menu-stat {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .tower-menu-stat-value {
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .tower-menu-stat-label {
+            font-size: 0.8rem;
+            color: #c9b37e;
+        }
+        
+        .tower-menu-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .tower-menu-btn {
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .tower-menu-upgrade {
+            background: linear-gradient(to bottom, #FFA500, #FF8C00);
+            color: white;
+        }
+        
+        .tower-menu-sell {
+            background: linear-gradient(to bottom, #FF4444, #CC0000);
+            color: white;
+        }
+        
+        .tower-menu-close {
+            background: linear-gradient(to bottom, #666, #444);
+            color: white;
+        }
+        
+        .tower-menu-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .sell-price {
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: #ffd700;
+            text-align: center;
+        }
+        
         /* Адаптивность */
         @media (max-width: 1200px) {
             .game-interface {
@@ -628,6 +761,10 @@
             
             .tower-name {
                 font-size: 1.1rem;
+            }
+            
+            .tower-context-menu {
+                min-width: 180px;
             }
         }
         
@@ -696,6 +833,11 @@
                 width: 40px;
                 height: 40px;
             }
+            
+            .tower-context-menu {
+                min-width: 160px;
+                padding: 10px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -716,6 +858,16 @@
             .modal-content {
                 padding: 20px;
             }
+            
+            .tower-context-menu {
+                min-width: 140px;
+                padding: 8px;
+            }
+            
+            .tower-menu-btn {
+                padding: 8px;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
@@ -724,6 +876,49 @@
     <div class="logo-container">
         <img src="https://w7.pngwing.com/pngs/132/506/png-transparent-toilet-bidet-seats-bathroom-newspaper-graphy-taekwondo-sticker-hand-bathroom-room.png" 
              alt="Логотип" class="game-logo">
+    </div>
+    
+    <!-- Всплывающее меню для башни -->
+    <div class="tower-context-menu" id="towerContextMenu">
+        <div class="tower-menu-header">
+            <div class="tower-menu-title" id="menuTowerName">Стрелковая башня</div>
+            <div class="tower-menu-level">Уровень: <span id="menuTowerLevel">1</span></div>
+        </div>
+        
+        <div class="tower-menu-stats">
+            <div class="tower-menu-stat">
+                <div class="tower-menu-stat-value" id="menuTowerDamage">15</div>
+                <div class="tower-menu-stat-label">Урон</div>
+            </div>
+            <div class="tower-menu-stat">
+                <div class="tower-menu-stat-value" id="menuTowerRange">140px</div>
+                <div class="tower-menu-stat-label">Дальность</div>
+            </div>
+            <div class="tower-menu-stat">
+                <div class="tower-menu-stat-value" id="menuTowerSpeed">1.0s</div>
+                <div class="tower-menu-stat-label">Скорость</div>
+            </div>
+            <div class="tower-menu-stat">
+                <div class="tower-menu-stat-value" id="menuTowerValue">60</div>
+                <div class="tower-menu-stat-label">Стоимость</div>
+            </div>
+        </div>
+        
+        <div class="tower-menu-actions">
+            <button class="tower-menu-btn tower-menu-upgrade" id="menuUpgradeBtn">
+                <i class="fas fa-arrow-up"></i> Улучшить (<span id="menuUpgradeCost">120</span>)
+            </button>
+            <button class="tower-menu-btn tower-menu-sell" id="menuSellBtn">
+                <i class="fas fa-coins"></i> Продать (<span id="menuSellPrice">30</span>)
+            </button>
+            <button class="tower-menu-btn tower-menu-close" id="menuCloseBtn">
+                <i class="fas fa-times"></i> Закрыть
+            </button>
+        </div>
+        
+        <div class="sell-price" id="sellPriceInfo">
+            Возврат: 50% от стоимости
+        </div>
     </div>
     
     <!-- Анимированные частицы на фоне -->
@@ -738,6 +933,7 @@
                 <p><strong>🎯 Цель игры:</strong> Защитите замок от врагов, построив и улучшая башни.</p>
                 <p><strong>🏗️ Постройка башен:</strong> Выберите башню слева и кликните на игровое поле.</p>
                 <p><strong>⚡ Улучшение башен:</strong> Кликните на существующую башню и нажмите кнопку улучшения.</p>
+                <p><strong>💰 Продажа башен:</strong> Кликните на башню правой кнопкой мыши и выберите "Продать".</p>
                 <p><strong>💰 Золото:</strong> Получайте за убийство врагов, тратьте на постройку и улучшения.</p>
                 <p><strong>❤️ Жизни:</strong> Теряются когда враги доходят до замка. Игра заканчивается при 0 жизнях.</p>
                 <p><strong>🌊 Волны:</strong> Каждая следующая волна сложнее предыдущей. Всего 15 волн.</p>
@@ -747,6 +943,8 @@
                     <div>1-4 - Выбор башни</div>
                     <div>Пробел - Пауза/Продолжить</div>
                     <div>Enter - Начать волну</div>
+                    <div>U - Улучшить выбранную башню</div>
+                    <div>S - Продать выбранную башню</div>
                     <div>Escape - Закрыть окна</div>
                 </div>
             </div>
@@ -800,6 +998,45 @@
                 <button class="game-button btn-primary" onclick="closeModal('upgradeModal')" style="margin-top: 20px;">
                     <i class="fas fa-check"></i> ПОНЯТНО
                 </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно продажи -->
+    <div id="sellModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('sellModal')">&times;</span>
+            <h2 style="color: #ffd700; margin-bottom: 20px; text-align: center;">Продажа башни</h2>
+            
+            <div style="text-align: center; margin: 20px 0;">
+                <div style="font-size: 4rem; color: #ffd700; margin-bottom: 10px;">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <h3 id="sellTowerName" style="color: #ffd700; margin-bottom: 10px;">Стрелковая башня</h3>
+                <p style="margin-bottom: 15px; font-size: 1.1rem;">Вы уверены, что хотите продать эту башню?</p>
+                
+                <div style="background: rgba(255, 215, 0, 0.1); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="text-align: center;">
+                            <div style="color: #c9b37e; font-size: 0.9rem;">Уровень башни:</div>
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #ffd700;" id="sellTowerLevel">1</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="color: #c9b37e; font-size: 0.9rem;">Вы получите:</div>
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #32CD32;" id="sellTowerPrice">30</div>
+                            <div style="color: #ffd700; font-size: 0.8rem;">золота</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin-top: 20px;">
+                    <button class="game-button btn-danger" onclick="confirmSell()" style="flex: 1;">
+                        <i class="fas fa-check"></i> ПРОДАТЬ
+                    </button>
+                    <button class="game-button btn-primary" onclick="closeModal('sellModal')" style="flex: 1;">
+                        <i class="fas fa-times"></i> ОТМЕНА
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -926,6 +1163,7 @@
                         <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>Выбрана:</strong> <span id="selectedTowerName">Стрелковая</span></p>
                         <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>Уровень:</strong> <span id="towerLevel">1</span></p>
                         <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>Улучшение:</strong> <span id="upgradeCost">120</span> золота</p>
+                        <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>Продажа:</strong> <span id="sellPrice">30</span> золота</p>
                     </div>
                 </div>
             </div>
@@ -951,7 +1189,7 @@
                     
                     <!-- Панель сообщений -->
                     <div class="message-panel">
-                        <div id="gameMessage">Выберите башню и начните игру!</div>
+                        <div id="gameMessage">Выберите башню и начните игру! Щелкните правой кнопкой по башне для меню.</div>
                     </div>
                 </div>
             </div>
@@ -1000,6 +1238,10 @@
                     
                     <button class="game-button btn-warning" id="upgradeTowerBtn">
                         <i class="fas fa-arrow-up"></i> УЛУЧШИТЬ БАШНЮ
+                    </button>
+                    
+                    <button class="game-button btn-danger" id="sellTowerBtn">
+                        <i class="fas fa-coins"></i> ПРОДАТЬ БАШНЮ
                     </button>
                     
                     <button class="game-button btn-info" id="pauseGameBtn">
@@ -1207,6 +1449,18 @@
                 this.target = null;
                 this.rotation = 0;
                 this.id = Math.random().toString(36).substr(2, 9);
+                this.baseCost = this.getBaseCost();
+                this.sellPrice = Math.floor(this.baseCost * 0.5);
+            }
+            
+            getBaseCost() {
+                const costs = {
+                    basic: 60,
+                    sniper: 140,
+                    cannon: 220,
+                    magic: 320
+                };
+                return costs[this.type] || 60;
             }
             
             getRange() {
@@ -1219,6 +1473,13 @@
             
             getFireRate() {
                 return Math.max(10, this.data.fireRate * (1 - (this.level - 1) * 0.1));
+            }
+            
+            getSellPrice() {
+                // Продажная цена = 50% от базовой стоимости + 25% за каждый уровень улучшения
+                const baseValue = this.baseCost * 0.5;
+                const upgradeValue = this.baseCost * 0.25 * (this.level - 1);
+                return Math.floor(baseValue + upgradeValue);
             }
             
             update() {
@@ -1380,6 +1641,37 @@
                 showMessage(`Башня улучшена до уровня ${this.level}!`);
                 updateUI();
             }
+            
+            sell() {
+                const sellPrice = this.getSellPrice();
+                gameState.gold += sellPrice;
+                
+                // Удаляем башню из массива
+                const index = towers.indexOf(this);
+                if (index > -1) {
+                    towers.splice(index, 1);
+                }
+                
+                // Эффект продажи
+                for (let i = 0; i < 20; i++) {
+                    particles.push(new Particle(
+                        this.x,
+                        this.y,
+                        '#FFD700',
+                        {
+                            x: (Math.random() - 0.5) * 8,
+                            y: (Math.random() - 0.5) * 8
+                        },
+                        Math.random() * 3 + 2,
+                        50
+                    ));
+                }
+                
+                showMessage(`Башня продана за ${sellPrice} золота!`);
+                gameState.selectedTowerForUpgrade = null;
+                hideTowerMenu();
+                updateUI();
+            }
         }
         
         // Показать модальное окно улучшения
@@ -1418,6 +1710,20 @@
                     closeModal('upgradeModal');
                 }
             }, 5000);
+        }
+        
+        // Показать модальное окно продажи
+        function showSellModal(tower) {
+            const modal = document.getElementById('sellModal');
+            const name = document.getElementById('sellTowerName');
+            const level = document.getElementById('sellTowerLevel');
+            const price = document.getElementById('sellTowerPrice');
+            
+            name.textContent = towerNames[tower.type];
+            level.textContent = tower.level;
+            price.textContent = tower.getSellPrice();
+            
+            modal.style.display = 'flex';
         }
         
         // Кэшированные данные башен
@@ -1756,6 +2062,14 @@
             document.getElementById('towerLevel').textContent = gameState.towerLevel;
             document.getElementById('upgradeCost').textContent = gameState.upgradeCost;
             
+            // Обновляем цену продажи
+            if (gameState.selectedTowerForUpgrade) {
+                const sellPrice = gameState.selectedTowerForUpgrade.getSellPrice();
+                document.getElementById('sellPrice').textContent = sellPrice;
+            } else {
+                document.getElementById('sellPrice').textContent = Math.floor(gameState.selectedTowerCost * 0.5);
+            }
+            
             // Прогресс волны
             const progress = gameState.enemiesAlive / gameState.enemiesInWave;
             const progressPercent = Math.max(0, (1 - progress) * 100);
@@ -2034,6 +2348,66 @@
             showMessage("Игра сброшена. Выберите башню и начните игру!");
         }
         
+        // ==================== СИСТЕМА МЕНЮ БАШЕН ====================
+        
+        // Показать меню башни
+        function showTowerMenu(tower, x, y) {
+            const menu = document.getElementById('towerContextMenu');
+            const towerName = document.getElementById('menuTowerName');
+            const towerLevel = document.getElementById('menuTowerLevel');
+            const towerDamage = document.getElementById('menuTowerDamage');
+            const towerRange = document.getElementById('menuTowerRange');
+            const towerSpeed = document.getElementById('menuTowerSpeed');
+            const towerValue = document.getElementById('menuTowerValue');
+            const upgradeCost = document.getElementById('menuUpgradeCost');
+            const sellPrice = document.getElementById('menuSellPrice');
+            
+            // Устанавливаем информацию о башне
+            towerName.textContent = towerNames[tower.type];
+            towerLevel.textContent = tower.level;
+            towerDamage.textContent = Math.floor(tower.damage);
+            towerRange.textContent = Math.floor(tower.range) + 'px';
+            towerSpeed.textContent = (tower.fireRate / 60).toFixed(1) + 's';
+            towerValue.textContent = tower.getSellPrice() * 2; // Показываем полную стоимость
+            upgradeCost.textContent = tower.upgradeCost;
+            sellPrice.textContent = tower.getSellPrice();
+            
+            // Позиционируем меню
+            menu.style.left = x + 'px';
+            menu.style.top = y + 'px';
+            menu.classList.add('active');
+            
+            // Сохраняем выбранную башню
+            gameState.selectedTowerForUpgrade = tower;
+            gameState.upgradeCost = tower.upgradeCost;
+            
+            updateUI();
+        }
+        
+        // Скрыть меню башни
+        function hideTowerMenu() {
+            const menu = document.getElementById('towerContextMenu');
+            menu.classList.remove('active');
+        }
+        
+        // Продать выбранную башню
+        function sellSelectedTower() {
+            if (!gameState.selectedTowerForUpgrade) {
+                showMessage("Сначала выберите башню!");
+                return;
+            }
+            
+            showSellModal(gameState.selectedTowerForUpgrade);
+        }
+        
+        // Подтвердить продажу
+        function confirmSell() {
+            if (gameState.selectedTowerForUpgrade) {
+                gameState.selectedTowerForUpgrade.sell();
+                closeModal('sellModal');
+            }
+        }
+        
         // ==================== ОБРАБОТЧИКИ СОБЫТИЙ ====================
         
         // Обработка кликов по холсту
@@ -2058,13 +2432,24 @@
                 if (distance < radius * radius) {
                     gameState.selectedTowerForUpgrade = tower;
                     gameState.upgradeCost = tower.upgradeCost;
-                    showMessage(`Выбрана башня уровня ${tower.level}. Улучшение: ${tower.upgradeCost} золота`);
+                    
+                    // Показываем меню только при правом клике
+                    if (e.button === 2) {
+                        showTowerMenu(tower, e.clientX, e.clientY);
+                        e.preventDefault();
+                    } else {
+                        showMessage(`Выбрана башня уровня ${tower.level}. Улучшение: ${tower.upgradeCost} золота`);
+                    }
+                    
                     updateUI();
                     return;
                 }
             }
             
             gameState.selectedTowerForUpgrade = null;
+            
+            // Скрываем меню при клике вне башни
+            hideTowerMenu();
             
             if (gameState.gold < gameState.selectedTowerCost) {
                 showMessage(`Недостаточно золота! Нужно ${gameState.selectedTowerCost}, у вас ${gameState.gold}`);
@@ -2124,6 +2509,37 @@
             }
             
             updateUI();
+        });
+        
+        // Обработка правого клика
+        canvas.addEventListener('contextmenu', (e) => {
+            if (!gameState.gameRunning) {
+                e.preventDefault();
+                return;
+            }
+            
+            const rect = canvas.getBoundingClientRect();
+            const scale = canvas.width / rect.width;
+            const x = (e.clientX - rect.left) * scale;
+            const y = (e.clientY - rect.top) * scale;
+            
+            // Проверка клика по существующей башне
+            for (const tower of towers) {
+                const dx = tower.x - x;
+                const dy = tower.y - y;
+                const distance = dx * dx + dy * dy;
+                const radius = 25 * (canvas.width / 800);
+                
+                if (distance < radius * radius) {
+                    showTowerMenu(tower, e.clientX, e.clientY);
+                    e.preventDefault();
+                    return;
+                }
+            }
+            
+            // Скрываем меню при клике вне башни
+            hideTowerMenu();
+            e.preventDefault();
         });
         
         // Вспомогательная функция для расстояния до линии
@@ -2223,8 +2639,35 @@
             gameState.selectedTowerForUpgrade.upgrade();
             gameState.gold -= gameState.upgradeCost;
             gameState.towerLevel = gameState.selectedTowerForUpgrade.level;
+            hideTowerMenu();
             updateUI();
         });
+        
+        document.getElementById('sellTowerBtn').addEventListener('click', sellSelectedTower);
+        
+        // Обработчики кнопок в меню башни
+        document.getElementById('menuUpgradeBtn').addEventListener('click', () => {
+            if (!gameState.selectedTowerForUpgrade) return;
+            
+            if (gameState.gold < gameState.upgradeCost) {
+                showMessage(`Недостаточно золота для улучшения! Нужно ${gameState.upgradeCost}, у вас ${gameState.gold}`);
+                return;
+            }
+            
+            gameState.selectedTowerForUpgrade.upgrade();
+            gameState.gold -= gameState.upgradeCost;
+            gameState.towerLevel = gameState.selectedTowerForUpgrade.level;
+            hideTowerMenu();
+            updateUI();
+        });
+        
+        document.getElementById('menuSellBtn').addEventListener('click', () => {
+            if (!gameState.selectedTowerForUpgrade) return;
+            
+            showSellModal(gameState.selectedTowerForUpgrade);
+        });
+        
+        document.getElementById('menuCloseBtn').addEventListener('click', hideTowerMenu);
         
         // Выбор башен
         document.querySelectorAll('.tower-card').forEach(card => {
@@ -2332,12 +2775,18 @@
         
         // Инициализация UI
         updateUI();
-        showMessage("Добро пожаловать в Tower Defense! Выберите башню и начните игру.");
+        showMessage("Добро пожаловать в Tower Defense! Выберите башню и начните игру. Щелкните правой кнопкой по башне для меню.");
         
         // Закрытие модальных окон
         window.addEventListener('click', (e) => {
             if (e.target.classList.contains('modal')) {
                 e.target.style.display = 'none';
+            }
+            
+            // Скрываем меню башни при клике вне его
+            const menu = document.getElementById('towerContextMenu');
+            if (!menu.contains(e.target) && menu.classList.contains('active')) {
+                hideTowerMenu();
             }
         });
         
@@ -2361,10 +2810,24 @@
                     const cards = document.querySelectorAll('.tower-card');
                     if (cards[index]) cards[index].click();
                     break;
+                case 'u':
+                case 'U':
+                    if (gameState.selectedTowerForUpgrade) {
+                        document.getElementById('upgradeTowerBtn').click();
+                    }
+                    break;
+                case 's':
+                case 'S':
+                    if (gameState.selectedTowerForUpgrade) {
+                        document.getElementById('sellTowerBtn').click();
+                    }
+                    break;
                 case 'Escape':
                     closeModal('helpModal');
                     closeModal('recordsModal');
                     closeModal('upgradeModal');
+                    closeModal('sellModal');
+                    hideTowerMenu();
                     break;
             }
         });
@@ -2377,6 +2840,40 @@
             document.querySelectorAll('.game-button').forEach(button => {
                 button.style.padding = '15px';
                 button.style.fontSize = '1.1rem';
+            });
+            
+            // Для мобильных устройств используем долгое нажатие вместо правого клика
+            let touchTimer;
+            canvas.addEventListener('touchstart', (e) => {
+                touchTimer = setTimeout(() => {
+                    const touch = e.touches[0];
+                    const rect = canvas.getBoundingClientRect();
+                    const scale = canvas.width / rect.width;
+                    const x = (touch.clientX - rect.left) * scale;
+                    const y = (touch.clientY - rect.top) * scale;
+                    
+                    // Проверка касания по существующей башне
+                    for (const tower of towers) {
+                        const dx = tower.x - x;
+                        const dy = tower.y - y;
+                        const distance = dx * dx + dy * dy;
+                        const radius = 25 * (canvas.width / 800);
+                        
+                        if (distance < radius * radius) {
+                            showTowerMenu(tower, touch.clientX, touch.clientY);
+                            e.preventDefault();
+                            return;
+                        }
+                    }
+                }, 500); // 500ms для долгого нажатия
+            });
+            
+            canvas.addEventListener('touchend', () => {
+                clearTimeout(touchTimer);
+            });
+            
+            canvas.addEventListener('touchmove', () => {
+                clearTimeout(touchTimer);
             });
         }
     </script>

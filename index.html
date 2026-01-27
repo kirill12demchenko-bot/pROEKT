@@ -27,11 +27,13 @@
         
         body {
             min-height: 100vh;
+            max-height: 100vh;
             background: var(--primary-bg);
             color: #f0e6d2;
-            overflow-x: hidden;
+            overflow: hidden;
             position: relative;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 10px;
         }
         
         /* Анимированный фон с частицами */
@@ -41,33 +43,39 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
+            top: 0;
+            left: 0;
         }
         
         /* Основной контейнер игры */
         .game-container {
             position: relative;
-            max-width: 1600px;
+            max-width: 100%;
+            height: calc(100vh - 20px);
             margin: 0 auto;
-            padding: 20px;
+            padding: 10px;
             z-index: 2;
+            display: flex;
+            flex-direction: column;
         }
         
         /* Заголовок с анимацией */
         .game-header {
             text-align: center;
-            margin-bottom: 30px;
-            padding: 25px;
+            margin-bottom: 15px;
+            padding: 15px;
             background: linear-gradient(90deg, 
                 rgba(139, 69, 19, 0.3) 0%, 
                 rgba(178, 34, 34, 0.4) 50%, 
                 rgba(184, 134, 11, 0.3) 100%);
-            border-radius: 20px;
+            border-radius: 15px;
             border: 2px solid rgba(255, 215, 0, 0.3);
             box-shadow: 
                 0 10px 30px rgba(0, 0, 0, 0.5),
                 inset 0 0 50px rgba(255, 215, 0, 0.1);
             position: relative;
             overflow: hidden;
+            flex-shrink: 0;
         }
         
         .game-header::before {
@@ -90,21 +98,22 @@
         }
         
         .game-title {
-            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
             background: linear-gradient(to right, #f0e6d2, #ffd700, #daa520);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             text-shadow: 0 0 30px rgba(218, 165, 32, 0.5);
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             letter-spacing: 2px;
             position: relative;
             z-index: 1;
             font-weight: 900;
+            line-height: 1.2;
         }
         
         .game-subtitle {
-            font-size: clamp(1rem, 2vw, 1.3rem);
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
             color: #c9b37e;
             font-style: italic;
             position: relative;
@@ -113,10 +122,11 @@
         
         /* Основной игровой интерфейс */
         .game-interface {
-            display: grid;
-            grid-template-columns: 280px 1fr 280px;
-            gap: 25px;
-            margin-bottom: 30px;
+            display: flex;
+            flex: 1;
+            gap: 15px;
+            min-height: 0;
+            height: 100%;
         }
         
         /* Боковые панели с улучшенной анимацией */
@@ -124,8 +134,8 @@
             background: linear-gradient(145deg, 
                 rgba(30, 30, 40, 0.9) 0%, 
                 rgba(50, 50, 70, 0.85) 100%);
-            border-radius: 20px;
-            padding: 25px;
+            border-radius: 15px;
+            padding: 15px;
             border: 2px solid;
             position: relative;
             overflow: hidden;
@@ -133,6 +143,29 @@
                 0 10px 25px rgba(0, 0, 0, 0.4),
                 inset 0 0 30px rgba(255, 215, 0, 0.1);
             backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            min-width: 260px;
+            max-width: 260px;
+            overflow-y: auto;
+        }
+        
+        .side-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .side-panel::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+        
+        .side-panel::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.5);
+            border-radius: 4px;
+        }
+        
+        .side-panel::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 215, 0, 0.7);
         }
         
         .left-panel {
@@ -146,27 +179,34 @@
         }
         
         .panel-title {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             color: #ffd700;
-            margin-bottom: 25px;
-            padding-bottom: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
             border-bottom: 2px solid rgba(218, 165, 32, 0.5);
             text-align: center;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
+            flex-shrink: 0;
         }
         
         /* Карточки башен */
+        .tower-cards {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        
         .tower-card {
             background: linear-gradient(145deg, 
                 rgba(40, 40, 60, 0.8) 0%, 
                 rgba(60, 60, 80, 0.9) 100%);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 2px solid transparent;
@@ -175,8 +215,8 @@
         }
         
         .tower-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
             border-color: #ffd700;
         }
         
@@ -185,7 +225,7 @@
                 rgba(139, 69, 19, 0.6) 0%, 
                 rgba(178, 34, 34, 0.7) 100%);
             border-color: #ffd700;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
         }
         
         .tower-card::before {
@@ -207,58 +247,60 @@
         }
         
         .tower-name {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             color: #ffd700;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         
         .tower-stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 8px;
+            margin: 10px 0;
         }
         
         .stat {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 8px;
+            padding: 6px;
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
+            border-radius: 6px;
+            font-size: 0.9rem;
         }
         
         .stat-value {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: bold;
         }
         
         .stat-label {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #c9b37e;
         }
         
         /* Кнопки с анимацией */
         .game-button {
             width: 100%;
-            padding: 16px;
-            margin: 12px 0;
+            padding: 12px;
+            margin: 8px 0;
             border: none;
-            border-radius: 12px;
-            font-size: 1.2rem;
+            border-radius: 10px;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
             position: relative;
             overflow: hidden;
             user-select: none;
+            flex-shrink: 0;
         }
         
         .game-button::after {
@@ -328,20 +370,21 @@
         
         /* Игровое поле */
         .game-field {
+            flex: 1;
             background: 
                 radial-gradient(circle at center, 
                     rgba(20, 25, 45, 0.95) 0%, 
                     rgba(10, 15, 30, 0.98) 100%);
-            border-radius: 20px;
-            padding: 20px;
+            border-radius: 15px;
+            padding: 15px;
             box-shadow: 
                 inset 0 0 50px rgba(0, 0, 0, 0.7),
                 0 0 40px rgba(139, 69, 19, 0.4);
             border: 3px solid #8b4513;
-            position: relative;
-            min-height: 600px;
             display: flex;
             flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
         }
         
         .canvas-container {
@@ -350,58 +393,39 @@
             justify-content: center;
             align-items: center;
             position: relative;
+            min-height: 0;
         }
         
         #gameCanvas {
-            border-radius: 15px;
+            border-radius: 12px;
             box-shadow: 
-                0 0 30px rgba(255, 215, 0, 0.3),
-                inset 0 0 30px rgba(0, 0, 0, 0.6);
+                0 0 20px rgba(255, 215, 0, 0.3),
+                inset 0 0 20px rgba(0, 0, 0, 0.6);
             border: 2px solid rgba(218, 165, 32, 0.6);
             background-color: rgba(15, 20, 35, 0.9);
             image-rendering: -webkit-optimize-contrast;
             image-rendering: crisp-edges;
             image-rendering: pixelated;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
         
-        /* Панель сообщений с анимацией */
-        .message-panel {
-            background: linear-gradient(to right, 
-                rgba(139, 69, 19, 0.8), 
-                rgba(178, 34, 34, 0.8));
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 20px;
-            text-align: center;
-            border: 2px solid rgba(255, 215, 0, 0.5);
-            position: relative;
-            overflow: hidden;
-            min-height: 70px;
+        /* Нижняя панель под полем */
+        .game-field-bottom {
+            margin-top: 15px;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column;
+            gap: 10px;
+            flex-shrink: 0;
         }
         
-        #gameMessage {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #ffd700;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 0.8; }
-            50% { opacity: 1; }
-            100% { opacity: 0.8; }
-        }
-        
-        /* Прогресс бар волны */
+        /* Прогресс волны */
         .wave-progress {
             height: 8px;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 4px;
-            margin: 15px 0;
+            margin: 5px 0;
             overflow: hidden;
             position: relative;
         }
@@ -435,6 +459,37 @@
             100% { transform: translateX(100%); }
         }
         
+        /* Панель сообщений */
+        .message-panel {
+            background: linear-gradient(to right, 
+                rgba(139, 69, 19, 0.8), 
+                rgba(178, 34, 34, 0.8));
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #gameMessage {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+        
         /* Модальные окна */
         .modal {
             display: none;
@@ -443,7 +498,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -454,14 +509,15 @@
             background: linear-gradient(145deg, 
                 rgba(30, 30, 50, 0.95) 0%, 
                 rgba(50, 50, 70, 0.95) 100%);
-            border-radius: 25px;
-            padding: 40px;
-            max-width: 600px;
-            width: 90%;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 90%;
+            max-height: 90vh;
             border: 3px solid #daa520;
             box-shadow: 0 0 50px rgba(218, 165, 32, 0.5);
             position: relative;
             animation: modalAppear 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
         }
         
         @keyframes modalAppear {
@@ -477,73 +533,69 @@
         
         .close-modal {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 2rem;
+            top: 15px;
+            right: 15px;
+            font-size: 1.8rem;
             color: #ffd700;
             cursor: pointer;
             transition: transform 0.3s;
+            z-index: 1001;
         }
         
         .close-modal:hover {
             transform: rotate(90deg);
         }
         
-        /* Адаптивность */
-        @media (max-width: 1200px) {
-            .game-interface {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto auto auto;
-            }
-            
-            .left-panel, .right-panel {
-                order: 2;
-            }
-            
-            .game-field {
-                order: 1;
-                min-height: 500px;
-            }
-            
-            .game-title {
-                font-size: 2.5rem;
-            }
-            
-            .panel-title {
-                font-size: 1.4rem;
-            }
+        /* Модальное окно улучшения */
+        #upgradeModal .modal-content {
+            max-width: 500px;
+            text-align: center;
         }
         
-        @media (max-width: 768px) {
-            .game-container {
-                padding: 10px;
-            }
-            
-            .game-title {
-                font-size: 2rem;
-            }
-            
-            .tower-stats {
-                grid-template-columns: 1fr;
-            }
-            
-            .side-panel {
-                padding: 15px;
-            }
-            
-            .game-button {
-                padding: 12px;
-                font-size: 1rem;
-            }
+        .upgrade-image {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            border: 3px solid #daa520;
+        }
+        
+        .upgrade-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .upgrade-info {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .upgrade-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .upgrade-stat {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
         
         /* Логотип */
         .logo-container {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
+            top: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
             z-index: 10;
         }
         
@@ -554,23 +606,116 @@
             filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
         }
         
-        /* Улучшенные стили для статистики */
-        .stat-display {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .game-interface {
+                gap: 10px;
+            }
+            
+            .side-panel {
+                min-width: 220px;
+                max-width: 220px;
+                padding: 12px;
+            }
+            
+            .panel-title {
+                font-size: 1.2rem;
+            }
+            
+            .tower-card {
+                padding: 12px;
+            }
+            
+            .tower-name {
+                font-size: 1.1rem;
+            }
         }
         
-        .stat-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+        @media (max-width: 992px) {
+            .game-interface {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .side-panel {
+                min-width: 100%;
+                max-width: 100%;
+                max-height: 200px;
+            }
+            
+            .left-panel, .right-panel {
+                order: 2;
+            }
+            
+            .game-field {
+                order: 1;
+                min-height: 400px;
+            }
+            
+            .tower-cards {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
+            
+            .tower-card {
+                margin-bottom: 0;
+                min-width: 200px;
+            }
         }
         
-        .stat-item:last-child {
-            border-bottom: none;
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 5px;
+                height: calc(100vh - 10px);
+            }
+            
+            .game-header {
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+            
+            .game-title {
+                font-size: 1.6rem;
+            }
+            
+            .tower-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .game-button {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+            
+            .logo-container {
+                top: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .tower-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .game-button {
+                font-size: 0.8rem;
+                padding: 8px;
+            }
+            
+            .upgrade-image {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
         }
     </style>
 </head>
@@ -615,6 +760,46 @@
             <h2 style="color: #ffd700; margin-bottom: 20px; text-align: center;">Рекорды</h2>
             <div id="recordsList" style="margin-top: 20px;">
                 <!-- Рекорды будут загружены динамически -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно улучшения -->
+    <div id="upgradeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('upgradeModal')">&times;</span>
+            <h2 style="color: #ffd700; margin-bottom: 20px; text-align: center;">Улучшение башни</h2>
+            
+            <div class="upgrade-image">
+                <img id="upgradeTowerImage" src="" alt="Улучшенная башня">
+            </div>
+            
+            <div class="upgrade-info">
+                <h3 id="upgradeTowerName" style="color: #ffd700; margin-bottom: 10px;">Башня улучшена!</h3>
+                <p style="margin-bottom: 15px;">Башня была успешно улучшена до следующего уровня!</p>
+                
+                <div class="upgrade-stats">
+                    <div class="upgrade-stat">
+                        <div style="color: #44ff44; font-weight: bold;">Новый уровень:</div>
+                        <div id="newTowerLevel" style="font-size: 1.5rem; font-weight: bold;">2</div>
+                    </div>
+                    <div class="upgrade-stat">
+                        <div style="color: #ff4444; font-weight: bold;">Урон:</div>
+                        <div id="newDamage" style="font-size: 1.5rem; font-weight: bold;">+25%</div>
+                    </div>
+                    <div class="upgrade-stat">
+                        <div style="color: #4444ff; font-weight: bold;">Скорость:</div>
+                        <div id="newSpeed" style="font-size: 1.5rem; font-weight: bold;">+10%</div>
+                    </div>
+                    <div class="upgrade-stat">
+                        <div style="color: #ffaa00; font-weight: bold;">Дальность:</div>
+                        <div id="newRange" style="font-size: 1.5rem; font-weight: bold;">+20%</div>
+                    </div>
+                </div>
+                
+                <button class="game-button btn-primary" onclick="closeModal('upgradeModal')" style="margin-top: 20px;">
+                    <i class="fas fa-check"></i> ПОНЯТНО
+                </button>
             </div>
         </div>
     </div>
@@ -734,13 +919,13 @@
                 </div>
                 
                 <div class="selected-tower-info">
-                    <h3 style="color: #ffd700; margin: 20px 0 15px; text-align: center;">
+                    <h3 style="color: #ffd700; margin: 15px 0 10px; text-align: center;">
                         <i class="fas fa-info-circle"></i> ИНФОРМАЦИЯ
                     </h3>
-                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px;">
-                        <p style="margin-bottom: 10px;"><strong>Выбрана:</strong> <span id="selectedTowerName">Стрелковая</span></p>
-                        <p style="margin-bottom: 10px;"><strong>Уровень:</strong> <span id="towerLevel">1</span></p>
-                        <p style="margin-bottom: 10px;"><strong>Стоимость улучшения:</strong> <span id="upgradeCost">120</span> золота</p>
+                    <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 8px;">
+                        <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>Выбрана:</strong> <span id="selectedTowerName">Стрелковая</span></p>
+                        <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>Уровень:</strong> <span id="towerLevel">1</span></p>
+                        <p style="margin-bottom: 8px; font-size: 0.9rem;"><strong>Улучшение:</strong> <span id="upgradeCost">120</span> золота</p>
                     </div>
                 </div>
             </div>
@@ -751,20 +936,23 @@
                     <canvas id="gameCanvas" width="800" height="550"></canvas>
                 </div>
                 
-                <!-- Прогресс волны -->
-                <div style="margin-top: 20px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                        <span>Прогресс волны:</span>
-                        <span id="waveProgressText">0/0</span>
+                <!-- Нижняя панель под полем -->
+                <div class="game-field-bottom">
+                    <!-- Прогресс волны -->
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.9rem;">
+                            <span>Прогресс волны:</span>
+                            <span id="waveProgressText">0/0</span>
+                        </div>
+                        <div class="wave-progress">
+                            <div class="wave-progress-bar" id="waveProgressBar"></div>
+                        </div>
                     </div>
-                    <div class="wave-progress">
-                        <div class="wave-progress-bar" id="waveProgressBar"></div>
+                    
+                    <!-- Панель сообщений -->
+                    <div class="message-panel">
+                        <div id="gameMessage">Выберите башню и начните игру!</div>
                     </div>
-                </div>
-                
-                <!-- Панель сообщений -->
-                <div class="message-panel">
-                    <div id="gameMessage">Выберите башню и начните игру!</div>
                 </div>
             </div>
             
@@ -774,22 +962,22 @@
                     <i class="fas fa-chart-line"></i> СТАТИСТИКА
                 </h2>
                 
-                <div class="game-stats">
-                    <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 15px; margin-bottom: 25px;">
-                        <div class="stat-display">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                <div class="game-stats" style="flex: 1;">
+                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div style="display: flex; justify-content: space-between;">
                                 <span><i class="fas fa-coins" style="color: #ffd700;"></i> Золото:</span>
                                 <span id="goldAmount" style="font-weight: bold; color: #ffd700;">200</span>
                             </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between;">
                                 <span><i class="fas fa-heart" style="color: #ff4444;"></i> Жизни:</span>
                                 <span id="livesCount" style="font-weight: bold; color: #ff4444;">25</span>
                             </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between;">
                                 <span><i class="fas fa-wave-square" style="color: #44ff44;"></i> Волна:</span>
                                 <span id="waveNumber" style="font-weight: bold; color: #44ff44;">1/15</span>
                             </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between;">
                                 <span><i class="fas fa-skull-crossbones" style="color: #ffaa00;"></i> Убито:</span>
                                 <span id="enemiesKilled" style="font-weight: bold; color: #ffaa00;">0</span>
                             </div>
@@ -818,14 +1006,14 @@
                         <i class="fas fa-pause"></i> ПАУЗА
                     </button>
                     
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;">
                         <button class="game-button" onclick="showModal('helpModal')" 
-                                style="background: #6a11cb; color: white; font-size: 1rem;">
+                                style="background: #6a11cb; color: white; font-size: 0.9rem;">
                             <i class="fas fa-question-circle"></i> Помощь
                         </button>
                         
                         <button class="game-button" onclick="showModal('recordsModal')"
-                                style="background: #2575fc; color: white; font-size: 1rem;">
+                                style="background: #2575fc; color: white; font-size: 0.9rem;">
                             <i class="fas fa-trophy"></i> Рекорды
                         </button>
                     </div>
@@ -835,95 +1023,55 @@
     </div>
 
     <script>
-        // ==================== ОПТИМИЗАЦИИ И ПРОИЗВОДИТЕЛЬНОСТЬ ====================
-        
-        // Оптимизированный игровой цикл
-        class GameLoop {
-            constructor() {
-                this.lastTime = 0;
-                this.accumulator = 0;
-                this.timestep = 1000 / 60; // 60 FPS
-                this.requestId = null;
-            }
-            
-            start(callback) {
-                const loop = (currentTime) => {
-                    if (!this.lastTime) this.lastTime = currentTime;
-                    const deltaTime = currentTime - this.lastTime;
-                    this.lastTime = currentTime;
-                    
-                    this.accumulator += deltaTime;
-                    
-                    while (this.accumulator >= this.timestep) {
-                        callback(this.timestep);
-                        this.accumulator -= this.timestep;
-                    }
-                    
-                    this.requestId = requestAnimationFrame(loop);
-                };
-                
-                this.requestId = requestAnimationFrame(loop);
-            }
-            
-            stop() {
-                if (this.requestId) {
-                    cancelAnimationFrame(this.requestId);
-                    this.requestId = null;
-                }
-            }
-        }
-        
-        // Оптимизированный пул объектов
-        class ObjectPool {
-            constructor(createFn, resetFn, initialSize = 10) {
-                this.createFn = createFn;
-                this.resetFn = resetFn;
-                this.pool = [];
-                this.active = new Set();
-                
-                for (let i = 0; i < initialSize; i++) {
-                    this.pool.push(createFn());
-                }
-            }
-            
-            get() {
-                let obj;
-                if (this.pool.length > 0) {
-                    obj = this.pool.pop();
-                } else {
-                    obj = this.createFn();
-                }
-                
-                this.active.add(obj);
-                return obj;
-            }
-            
-            release(obj) {
-                if (this.resetFn) {
-                    this.resetFn(obj);
-                }
-                
-                this.active.delete(obj);
-                this.pool.push(obj);
-            }
-            
-            clear() {
-                this.active.clear();
-                this.pool.length = 0;
-            }
-        }
-        
         // ==================== ИНИЦИАЛИЗАЦИЯ ИГРЫ ====================
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         
-        // Оптимизация рендеринга
-        canvas.style.imageRendering = 'optimizeSpeed';
-        canvas.style.imageRendering = '-moz-crisp-edges';
-        canvas.style.imageRendering = '-webkit-optimize-contrast';
-        canvas.style.imageRendering = 'optimize-contrast';
-        canvas.style.imageRendering = 'pixelated';
-        canvas.style.msInterpolationMode = 'nearest-neighbor';
+        // Автоматическая настройка размера холста
+        function resizeCanvas() {
+            const container = document.querySelector('.canvas-container');
+            const containerWidth = container.clientWidth;
+            const containerHeight = container.clientHeight;
+            
+            // Сохраняем соотношение сторон 800x550 ≈ 1.45
+            const targetRatio = 800 / 550;
+            let width = containerWidth;
+            let height = containerWidth / targetRatio;
+            
+            if (height > containerHeight) {
+                height = containerHeight;
+                width = containerHeight * targetRatio;
+            }
+            
+            canvas.width = Math.floor(width);
+            canvas.height = Math.floor(height);
+            updateEnemyPath();
+        }
+        
+        // Обновление пути врагов в зависимости от размера холста
+        function updateEnemyPath() {
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Масштабируем путь врагов в зависимости от размера холста
+            const scaleX = width / 800;
+            const scaleY = height / 550;
+            
+            enemyPath = [
+                {x: -20 * scaleX, y: 150 * scaleY},
+                {x: 120 * scaleX, y: 150 * scaleY},
+                {x: 120 * scaleX, y: 80 * scaleY},
+                {x: 250 * scaleX, y: 80 * scaleY},
+                {x: 250 * scaleX, y: 200 * scaleY},
+                {x: 400 * scaleX, y: 200 * scaleY},
+                {x: 400 * scaleX, y: 100 * scaleY},
+                {x: 550 * scaleX, y: 100 * scaleY},
+                {x: 550 * scaleX, y: 250 * scaleY},
+                {x: 700 * scaleX, y: 250 * scaleY},
+                {x: 700 * scaleX, y: 150 * scaleY},
+                {x: (width + 20) * scaleX, y: 150 * scaleY}
+            ];
+        }
         
         // Игровые переменные
         let gameState = {
@@ -953,37 +1101,26 @@
         const particles = [];
         const effects = [];
         
-        // Путь врагов с извилистой траекторией (оптимизирован для вычислений)
-        const enemyPath = [
-            {x: -20, y: 150},
-            {x: 120, y: 150},
-            {x: 120, y: 80},
-            {x: 250, y: 80},
-            {x: 250, y: 200},
-            {x: 400, y: 200},
-            {x: 400, y: 100},
-            {x: 550, y: 100},
-            {x: 550, y: 250},
-            {x: 700, y: 250},
-            {x: 700, y: 150},
-            {x: 820, y: 150}
-        ];
+        // Путь врагов (будет обновляться при изменении размера)
+        let enemyPath = [];
         
-        // Кэшированные значения для оптимизации
-        const TOWER_DATA = {
-            basic: { damage: 15, range: 140, fireRate: 60, color: '#32CD32', projectileColor: '#00FF00', ability: 'Быстрая стрельба' },
-            sniper: { damage: 35, range: 220, fireRate: 120, color: '#1E90FF', projectileColor: '#4169E1', ability: 'Пробивание брони' },
-            cannon: { damage: 50, range: 110, fireRate: 150, color: '#FF4500', projectileColor: '#FF8C00', ability: 'Взрывная атака' },
-            magic: { damage: 20, range: 160, fireRate: 30, color: '#BA55D3', projectileColor: '#FF00FF', ability: 'Замедление врагов' }
+        // Картинки для улучшения башен
+        const upgradeImages = {
+            basic: 'https://images.unsplash.com/photo-1618331833071-1c0c6ee3d19d?w=400&h=400&fit=crop&crop=center',
+            sniper: 'https://images.unsplash.com/photo-1595263181615-2c8c1b8b9a3e?w=400&h=400&fit=crop&crop=center',
+            cannon: 'https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?w=400&h=400&fit=crop&crop=center',
+            magic: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=400&fit=crop&crop=center'
         };
         
-        const ENEMY_DATA = {
-            basic: { speed: 1.2, health: 40, reward: 15, color: '#FF6347' },
-            fast: { speed: 2.0, health: 25, reward: 20, color: '#00CED1' },
-            tank: { speed: 0.8, health: 120, reward: 40, color: '#696969' }
+        // Названия башен
+        const towerNames = {
+            basic: 'Стрелковая башня',
+            sniper: 'Снайперская башня',
+            cannon: 'Артиллерийская башня',
+            magic: 'Магическая башня'
         };
         
-        // ==================== ОПТИМИЗИРОВАННАЯ СИСТЕМА ЧАСТИЦ ====================
+        // ==================== СИСТЕМА ЧАСТИЦ ====================
         class Particle {
             constructor(x, y, color, velocity, size = 2, life = 60) {
                 this.x = x;
@@ -1017,17 +1154,17 @@
             }
         }
         
-        // Оптимизированное создание фоновых частиц
+        // Создание фоновых частиц
         function createBackgroundParticles() {
             const particlesContainer = document.getElementById('particles');
             const fragment = document.createDocumentFragment();
             
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 30; i++) { // Меньше частиц для производительности
                 const particle = document.createElement('div');
                 particle.style.cssText = `
                     position: absolute;
-                    width: ${Math.random() * 3 + 1}px;
-                    height: ${Math.random() * 3 + 1}px;
+                    width: ${Math.random() * 2 + 1}px;
+                    height: ${Math.random() * 2 + 1}px;
                     background-color: rgba(${Math.random() * 55 + 200}, ${Math.random() * 55 + 165}, ${Math.random() * 55 + 32}, ${Math.random() * 0.3 + 0.1});
                     border-radius: 50%;
                     left: ${Math.random() * 100}vw;
@@ -1052,9 +1189,9 @@
             particlesContainer.appendChild(fragment);
         }
         
-        // ==================== ОПТИМИЗИРОВАННЫЕ КЛАССЫ ИГРОВЫХ ОБЪЕКТОВ ====================
+        // ==================== КЛАССЫ ИГРОВЫХ ОБЪЕКТОВ ====================
         
-        // Класс башни с оптимизированными вычислениями
+        // Класс башни
         class Tower {
             constructor(x, y, type) {
                 this.x = x;
@@ -1142,7 +1279,7 @@
                 projectiles.push(projectile);
                 
                 // Создание эффекта выстрела
-                for (let i = 0; i < 5; i++) {
+                for (let i = 0; i < 3; i++) { // Меньше частиц
                     particles.push(new Particle(
                         this.x,
                         this.y,
@@ -1169,8 +1306,11 @@
             }
             
             draw() {
+                const scale = canvas.width / 800; // Масштабирование для разных размеров
+                
                 ctx.save();
                 ctx.translate(this.x, this.y);
+                ctx.scale(scale, scale);
                 ctx.rotate(this.rotation);
                 
                 // Корпус башни
@@ -1193,14 +1333,14 @@
                 
                 // Уровень башни
                 ctx.fillStyle = '#FFD700';
-                ctx.font = 'bold 14px Arial';
+                ctx.font = `bold ${14 * scale}px Arial`;
                 ctx.textAlign = 'center';
-                ctx.fillText(this.level.toString(), this.x, this.y + 30);
+                ctx.fillText(this.level.toString(), this.x, this.y + 30 * scale);
                 
                 // Радиус при выборе
                 if (gameState.selectedTowerForUpgrade === this) {
                     ctx.strokeStyle = `${this.data.color}80`;
-                    ctx.lineWidth = 2;
+                    ctx.lineWidth = 2 * scale;
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.range, 0, Math.PI * 2);
                     ctx.stroke();
@@ -1208,14 +1348,22 @@
             }
             
             upgrade() {
+                const oldLevel = this.level;
+                const oldDamage = this.damage;
+                const oldRange = this.range;
+                const oldFireRate = this.fireRate;
+                
                 this.level++;
                 this.range = this.getRange();
                 this.damage = this.getDamage();
                 this.fireRate = this.getFireRate();
                 this.upgradeCost = Math.floor(this.upgradeCost * 1.5);
                 
+                // Показываем окно улучшения
+                showUpgradeModal(this, oldLevel, oldDamage, oldRange, oldFireRate);
+                
                 // Эффект улучшения
-                for (let i = 0; i < 20; i++) {
+                for (let i = 0; i < 15; i++) { // Меньше частиц
                     particles.push(new Particle(
                         this.x,
                         this.y,
@@ -1234,7 +1382,59 @@
             }
         }
         
-        // Класс врага с оптимизированными вычислениями
+        // Показать модальное окно улучшения
+        function showUpgradeModal(tower, oldLevel, oldDamage, oldRange, oldFireRate) {
+            const modal = document.getElementById('upgradeModal');
+            const image = document.getElementById('upgradeTowerImage');
+            const name = document.getElementById('upgradeTowerName');
+            const newLevel = document.getElementById('newTowerLevel');
+            const newDamage = document.getElementById('newDamage');
+            const newRange = document.getElementById('newRange');
+            const newSpeed = document.getElementById('newSpeed');
+            
+            // Устанавливаем изображение
+            image.src = upgradeImages[tower.type] || upgradeImages.basic;
+            image.alt = towerNames[tower.type];
+            
+            // Устанавливаем информацию
+            name.textContent = `${towerNames[tower.type]} улучшена!`;
+            newLevel.textContent = tower.level;
+            
+            // Рассчитываем проценты улучшения
+            const damageIncrease = Math.round(((tower.damage - oldDamage) / oldDamage) * 100);
+            const rangeIncrease = Math.round(((tower.range - oldRange) / oldRange) * 100);
+            const speedIncrease = Math.round(((oldFireRate - tower.fireRate) / oldFireRate) * 100);
+            
+            newDamage.textContent = `+${damageIncrease}%`;
+            newRange.textContent = `+${rangeIncrease}%`;
+            newSpeed.textContent = `+${speedIncrease}%`;
+            
+            // Показываем модальное окно
+            modal.style.display = 'flex';
+            
+            // Автоматическое закрытие через 5 секунд
+            setTimeout(() => {
+                if (modal.style.display === 'flex') {
+                    closeModal('upgradeModal');
+                }
+            }, 5000);
+        }
+        
+        // Кэшированные данные башен
+        const TOWER_DATA = {
+            basic: { damage: 15, range: 140, fireRate: 60, color: '#32CD32', projectileColor: '#00FF00' },
+            sniper: { damage: 35, range: 220, fireRate: 120, color: '#1E90FF', projectileColor: '#4169E1' },
+            cannon: { damage: 50, range: 110, fireRate: 150, color: '#FF4500', projectileColor: '#FF8C00' },
+            magic: { damage: 20, range: 160, fireRate: 30, color: '#BA55D3', projectileColor: '#FF00FF' }
+        };
+        
+        const ENEMY_DATA = {
+            basic: { speed: 1.2, health: 40, reward: 15, color: '#FF6347' },
+            fast: { speed: 2.0, health: 25, reward: 20, color: '#00CED1' },
+            tank: { speed: 0.8, health: 120, reward: 40, color: '#696969' }
+        };
+        
+        // Класс врага
         class Enemy {
             constructor(type, wave) {
                 this.type = type;
@@ -1302,11 +1502,13 @@
             }
             
             draw() {
+                const scale = canvas.width / 800;
+                
                 // Тело врага
                 ctx.fillStyle = this.data.color;
                 ctx.beginPath();
                 
-                const radius = this.isBoss ? 18 : 12;
+                const radius = (this.isBoss ? 18 : 12) * scale;
                 ctx.arc(this.x, this.y, radius, 0, Math.PI * 2);
                 ctx.fill();
                 
@@ -1315,43 +1517,43 @@
                     ctx.save();
                     ctx.fillStyle = '#FFD700';
                     ctx.beginPath();
-                    ctx.moveTo(this.x - 15, this.y - 15);
-                    ctx.lineTo(this.x - 5, this.y - 25);
-                    ctx.lineTo(this.x + 5, this.y - 15);
-                    ctx.lineTo(this.x + 15, this.y - 25);
-                    ctx.lineTo(this.x + 25, this.y - 15);
-                    ctx.lineTo(this.x + 15, this.y - 5);
-                    ctx.lineTo(this.x - 15, this.y - 15);
+                    ctx.moveTo(this.x - 15 * scale, this.y - 15 * scale);
+                    ctx.lineTo(this.x - 5 * scale, this.y - 25 * scale);
+                    ctx.lineTo(this.x + 5 * scale, this.y - 15 * scale);
+                    ctx.lineTo(this.x + 15 * scale, this.y - 25 * scale);
+                    ctx.lineTo(this.x + 25 * scale, this.y - 15 * scale);
+                    ctx.lineTo(this.x + 15 * scale, this.y - 5 * scale);
+                    ctx.lineTo(this.x - 15 * scale, this.y - 15 * scale);
                     ctx.fill();
                     ctx.restore();
                 }
                 
                 // Полоска здоровья
-                const healthWidth = this.isBoss ? 40 : 30;
+                const healthWidth = (this.isBoss ? 40 : 30) * scale;
                 const healthPercent = this.health / this.maxHealth;
                 
                 ctx.fillStyle = '#FF0000';
-                ctx.fillRect(this.x - healthWidth/2, this.y - 25, healthWidth, 5);
+                ctx.fillRect(this.x - healthWidth/2, this.y - 25 * scale, healthWidth, 5 * scale);
                 
                 ctx.fillStyle = healthPercent > 0.5 ? '#00FF00' : '#FFA500';
-                ctx.fillRect(this.x - healthWidth/2, this.y - 25, healthWidth * healthPercent, 5);
+                ctx.fillRect(this.x - healthWidth/2, this.y - 25 * scale, healthWidth * healthPercent, 5 * scale);
                 
                 // Иконка типа
                 ctx.fillStyle = '#FFF';
-                ctx.font = 'bold 12px Arial';
+                ctx.font = `bold ${12 * scale}px Arial`;
                 ctx.textAlign = 'center';
                 
                 const icon = this.type === 'basic' ? '👤' : 
                             this.type === 'fast' ? '⚡' : '🛡️';
                 
-                ctx.fillText(icon, this.x, this.y + 5);
+                ctx.fillText(icon, this.x, this.y + 5 * scale);
                 
                 // Эффект замедления
                 if (this.slowDuration > 0) {
                     ctx.strokeStyle = '#00BFFF';
-                    ctx.lineWidth = 2;
+                    ctx.lineWidth = 2 * scale;
                     ctx.beginPath();
-                    ctx.arc(this.x, this.y, 15, 0, Math.PI * 2);
+                    ctx.arc(this.x, this.y, 15 * scale, 0, Math.PI * 2);
                     ctx.stroke();
                 }
             }
@@ -1360,7 +1562,7 @@
                 this.health -= damage;
                 
                 // Эффект попадания
-                for (let i = 0; i < 5; i++) {
+                for (let i = 0; i < 3; i++) { // Меньше частиц
                     particles.push(new Particle(
                         this.x,
                         this.y,
@@ -1392,7 +1594,7 @@
                 gameState.enemiesAlive--;
                 
                 // Эффект смерти
-                for (let i = 0; i < 15; i++) {
+                for (let i = 0; i < 10; i++) { // Меньше частиц
                     particles.push(new Particle(
                         this.x,
                         this.y,
@@ -1408,7 +1610,7 @@
                 
                 if (this.isBoss) {
                     showMessage(`БОСС УНИЧТОЖЕН! +${this.reward} золота`);
-                    for (let i = 0; i < 30; i++) {
+                    for (let i = 0; i < 20; i++) { // Меньше частиц
                         particles.push(new Particle(
                             this.x,
                             this.y,
@@ -1493,7 +1695,7 @@
                 this.target.takeDamage(this.damage, effect);
                 
                 if (effect === 'explosion') {
-                    for (let i = 0; i < 20; i++) {
+                    for (let i = 0; i < 10; i++) { // Меньше частиц
                         particles.push(new Particle(
                             this.target.x,
                             this.target.y,
@@ -1510,6 +1712,8 @@
             }
             
             draw() {
+                const scale = canvas.width / 800;
+                
                 // След снаряда
                 for (let i = 0; i < this.trail.length; i++) {
                     const point = this.trail[i];
@@ -1519,7 +1723,7 @@
                     ctx.globalAlpha = alpha * 0.5;
                     ctx.fillStyle = this.color;
                     ctx.beginPath();
-                    ctx.arc(point.x, point.y, this.size * alpha, 0, Math.PI * 2);
+                    ctx.arc(point.x, point.y, this.size * alpha * scale, 0, Math.PI * 2);
                     ctx.fill();
                     ctx.restore();
                 }
@@ -1527,18 +1731,18 @@
                 // Снаряд
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.arc(this.x, this.y, this.size * scale, 0, Math.PI * 2);
                 ctx.fill();
                 
                 // Свечение
                 ctx.shadowColor = this.color;
-                ctx.shadowBlur = 15;
+                ctx.shadowBlur = 15 * scale;
                 ctx.fill();
                 ctx.shadowBlur = 0;
             }
         }
         
-        // ==================== ОПТИМИЗИРОВАННАЯ ИГРОВАЯ ЛОГИКА ====================
+        // ==================== ИГРОВАЯ ЛОГИКА ====================
         
         // Обновление интерфейса
         function updateUI() {
@@ -1547,13 +1751,6 @@
             document.getElementById('waveNumber').textContent = `${gameState.wave}/${gameState.totalWaves}`;
             document.getElementById('enemiesKilled').textContent = gameState.enemiesKilled;
             document.getElementById('scoreValue').textContent = gameState.score;
-            
-            const towerNames = {
-                basic: 'Стрелковая',
-                sniper: 'Снайперская',
-                cannon: 'Пушка',
-                magic: 'Магическая'
-            };
             
             document.getElementById('selectedTowerName').textContent = towerNames[gameState.selectedTower];
             document.getElementById('towerLevel').textContent = gameState.towerLevel;
@@ -1578,7 +1775,7 @@
             }, 10);
         }
         
-        // Отрисовка игрового поля (оптимизированная)
+        // Отрисовка игрового поля
         function drawGameField() {
             // Фон
             ctx.fillStyle = '#0a0a1a';
@@ -1592,59 +1789,64 @@
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
             // Путь врагов
-            ctx.strokeStyle = '#8B4513';
-            ctx.lineWidth = 35;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            ctx.beginPath();
-            
-            for (let i = 0; i < enemyPath.length; i++) {
-                if (i === 0) {
-                    ctx.moveTo(enemyPath[i].x, enemyPath[i].y);
-                } else {
-                    ctx.lineTo(enemyPath[i].x, enemyPath[i].y);
-                }
-            }
-            ctx.stroke();
-            
-            // Точки пути
-            ctx.fillStyle = '#FFD700';
-            for (const point of enemyPath) {
+            if (enemyPath.length > 0) {
+                ctx.strokeStyle = '#8B4513';
+                ctx.lineWidth = 35 * (canvas.width / 800);
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
                 ctx.beginPath();
-                ctx.arc(point.x, point.y, 8, 0, Math.PI * 2);
-                ctx.fill();
+                
+                for (let i = 0; i < enemyPath.length; i++) {
+                    if (i === 0) {
+                        ctx.moveTo(enemyPath[i].x, enemyPath[i].y);
+                    } else {
+                        ctx.lineTo(enemyPath[i].x, enemyPath[i].y);
+                    }
+                }
+                ctx.stroke();
+                
+                // Точки пути
+                ctx.fillStyle = '#FFD700';
+                for (const point of enemyPath) {
+                    ctx.beginPath();
+                    ctx.arc(point.x, point.y, 8 * (canvas.width / 800), 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                
+                // Замок
+                drawCastle();
             }
-            
-            // Замок
-            drawCastle();
         }
         
         // Отрисовка замка
         function drawCastle() {
-            const castleX = canvas.width - 60;
-            const castleY = enemyPath[enemyPath.length - 1].y - 40;
+            if (enemyPath.length === 0) return;
+            
+            const scale = canvas.width / 800;
+            const castleX = enemyPath[enemyPath.length - 1].x - 60 * scale;
+            const castleY = enemyPath[enemyPath.length - 1].y - 40 * scale;
             
             // Основание замка
             ctx.fillStyle = '#2F4F4F';
-            ctx.fillRect(castleX, castleY, 60, 80);
+            ctx.fillRect(castleX, castleY, 60 * scale, 80 * scale);
             
             // Башни замка
             ctx.fillStyle = '#696969';
-            ctx.fillRect(castleX - 10, castleY - 20, 20, 20);
-            ctx.fillRect(castleX + 50, castleY - 20, 20, 20);
+            ctx.fillRect(castleX - 10 * scale, castleY - 20 * scale, 20 * scale, 20 * scale);
+            ctx.fillRect(castleX + 50 * scale, castleY - 20 * scale, 20 * scale, 20 * scale);
             
             // Крыши
             ctx.fillStyle = '#8B0000';
             ctx.beginPath();
-            ctx.moveTo(castleX - 15, castleY - 20);
-            ctx.lineTo(castleX + 5, castleY - 40);
-            ctx.lineTo(castleX + 25, castleY - 20);
+            ctx.moveTo(castleX - 15 * scale, castleY - 20 * scale);
+            ctx.lineTo(castleX + 5 * scale, castleY - 40 * scale);
+            ctx.lineTo(castleX + 25 * scale, castleY - 20 * scale);
             ctx.closePath();
             ctx.fill();
             
             // Ворота
             ctx.fillStyle = '#8B4513';
-            ctx.fillRect(castleX + 20, castleY + 20, 20, 40);
+            ctx.fillRect(castleX + 20 * scale, castleY + 20 * scale, 20 * scale, 40 * scale);
         }
         
         // Обновление и отрисовка эффектов
@@ -1659,7 +1861,7 @@
                     
                     ctx.fillStyle = `rgba(255, 255, 200, ${effect.life / 10})`;
                     ctx.beginPath();
-                    ctx.arc(0, 0, effect.size, 0, Math.PI * 2);
+                    ctx.arc(0, 0, effect.size * (canvas.width / 800), 0, Math.PI * 2);
                     ctx.fill();
                     
                     ctx.restore();
@@ -1672,11 +1874,23 @@
             }
         }
         
-        // Оптимизированный игровой цикл
-        const gameLoopManager = new GameLoop();
-        
-        function gameLoop(deltaTime) {
-            if (gameState.gamePaused || !gameState.gameRunning) return;
+        // Игровой цикл
+        let lastTime = 0;
+        function gameLoop(currentTime) {
+            if (!lastTime) lastTime = currentTime;
+            const deltaTime = currentTime - lastTime;
+            lastTime = currentTime;
+            
+            if (gameState.gamePaused || !gameState.gameRunning) {
+                requestAnimationFrame(gameLoop);
+                return;
+            }
+            
+            // Ограничиваем FPS для производительности
+            if (deltaTime < 16) { // ~60 FPS
+                requestAnimationFrame(gameLoop);
+                return;
+            }
             
             // Очистка холста
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1732,6 +1946,7 @@
             }
             
             updateUI();
+            requestAnimationFrame(gameLoop);
         }
         
         // Запуск новой волны
@@ -1750,7 +1965,7 @@
                 
                 setTimeout(() => {
                     enemies.push(new Enemy(enemyTypes[typeIndex], gameState.wave));
-                }, i * 800); // Уменьшенная задержка для оптимизации
+                }, i * 800);
             }
             
             showMessage(`Волна ${gameState.wave} началась! Уничтожьте ${gameState.enemiesInWave} врагов!`);
@@ -1829,16 +2044,18 @@
             }
             
             const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+            const scale = canvas.width / rect.width;
+            const x = (e.clientX - rect.left) * scale;
+            const y = (e.clientY - rect.top) * scale;
             
             // Проверка клика по существующей башне
             for (const tower of towers) {
                 const dx = tower.x - x;
                 const dy = tower.y - y;
                 const distance = dx * dx + dy * dy;
+                const radius = 25 * (canvas.width / 800);
                 
-                if (distance < 625) { // 25²
+                if (distance < radius * radius) {
                     gameState.selectedTowerForUpgrade = tower;
                     gameState.upgradeCost = tower.upgradeCost;
                     showMessage(`Выбрана башня уровня ${tower.level}. Улучшение: ${tower.upgradeCost} золота`);
@@ -1854,28 +2071,46 @@
                 return;
             }
             
-            if (isPointOnPath(x, y, 40)) {
+            // Проверка размещения на пути
+            const threshold = 40 * scale;
+            let onPath = false;
+            
+            for (let i = 0; i < enemyPath.length - 1; i++) {
+                const A = enemyPath[i];
+                const B = enemyPath[i + 1];
+                const distance = pointToLineDistance(x, y, A.x, A.y, B.x, B.y);
+                
+                if (distance < threshold) {
+                    onPath = true;
+                    break;
+                }
+            }
+            
+            if (onPath) {
                 showMessage("Нельзя ставить башни на пути врагов!");
                 return;
             }
             
+            // Проверка расстояния до других башен
+            const minDistance = 60 * scale;
             for (const tower of towers) {
                 const dx = tower.x - x;
                 const dy = tower.y - y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 
-                if (distance < 60) {
+                if (distance < minDistance) {
                     showMessage("Башни должны быть на расстоянии не менее 60px друг от друга!");
                     return;
                 }
             }
             
+            // Создание башни
             towers.push(new Tower(x, y, gameState.selectedTower));
             gameState.gold -= gameState.selectedTowerCost;
             showMessage(`Башня построена! Осталось золота: ${gameState.gold}`);
             
             // Эффект постройки
-            for (let i = 0; i < 15; i++) {
+            for (let i = 0; i < 10; i++) { // Меньше частиц
                 particles.push(new Particle(
                     x, y,
                     '#32CD32',
@@ -1891,24 +2126,8 @@
             updateUI();
         });
         
-        // Проверка точки на пути (оптимизированная)
-        function isPointOnPath(px, py, threshold) {
-            const thresholdSquared = threshold * threshold;
-            
-            for (let i = 0; i < enemyPath.length - 1; i++) {
-                const A = enemyPath[i];
-                const B = enemyPath[i + 1];
-                
-                const distanceSquared = pointToLineDistanceSquared(px, py, A.x, A.y, B.x, B.y);
-                if (distanceSquared < thresholdSquared) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        // Квадрат расстояния от точки до отрезка (оптимизировано)
-        function pointToLineDistanceSquared(px, py, x1, y1, x2, y2) {
+        // Вспомогательная функция для расстояния до линии
+        function pointToLineDistance(px, py, x1, y1, x2, y2) {
             const A = px - x1;
             const B = py - y1;
             const C = x2 - x1;
@@ -1936,23 +2155,25 @@
             const dx = px - xx;
             const dy = py - yy;
             
-            return dx * dx + dy * dy;
+            return Math.sqrt(dx * dx + dy * dy);
         }
         
         // Наведение на башню
         canvas.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+            const scale = canvas.width / rect.width;
+            const x = (e.clientX - rect.left) * scale;
+            const y = (e.clientY - rect.top) * scale;
             
             let hovered = false;
+            const radius = 25 * (canvas.width / 800);
             
             for (const tower of towers) {
                 const dx = tower.x - x;
                 const dy = tower.y - y;
                 const distance = dx * dx + dy * dy;
                 
-                if (distance < 625) { // 25²
+                if (distance < radius * radius) {
                     hovered = true;
                     break;
                 }
@@ -1967,6 +2188,7 @@
                 gameState.gamePaused = false;
                 showMessage("Игра продолжена!");
                 document.getElementById('startWaveBtn').innerHTML = '<i class="fas fa-play"></i> НАЧАТЬ ВОЛНУ';
+                document.getElementById('pauseGameBtn').innerHTML = '<i class="fas fa-pause"></i> ПАУЗА';
             } else if (!gameState.gameRunning) {
                 startWave();
             }
@@ -2092,8 +2314,15 @@
         
         // ==================== ИНИЦИАЛИЗАЦИЯ ====================
         
-        // Запуск оптимизированного игрового цикла
-        gameLoopManager.start(gameLoop);
+        // Настройка размера холста при загрузке и изменении размера окна
+        window.addEventListener('load', () => {
+            resizeCanvas();
+            requestAnimationFrame(gameLoop);
+        });
+        
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+        });
         
         // Создание фоновых частиц
         createBackgroundParticles();
@@ -2116,6 +2345,7 @@
         document.addEventListener('keydown', (e) => {
             switch(e.key) {
                 case ' ':
+                    e.preventDefault();
                     document.getElementById('pauseGameBtn').click();
                     break;
                 case 'Enter':
@@ -2134,6 +2364,7 @@
                 case 'Escape':
                     closeModal('helpModal');
                     closeModal('recordsModal');
+                    closeModal('upgradeModal');
                     break;
             }
         });
@@ -2144,8 +2375,8 @@
             
             // Увеличение размера кнопок для мобильных
             document.querySelectorAll('.game-button').forEach(button => {
-                button.style.padding = '20px';
-                button.style.fontSize = '1.3rem';
+                button.style.padding = '15px';
+                button.style.fontSize = '1.1rem';
             });
         }
     </script>
